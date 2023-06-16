@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/common/utils/colors.dart';
 
-class OTPScreen extends StatefulWidget {
+import '/features/auth/controller/auth_controller.dart';
+
+class OTPScreen extends ConsumerWidget {
   static const routeName = '/otp-screen';
 
   final String verificationId;
@@ -12,13 +15,20 @@ class OTPScreen extends StatefulWidget {
     required this.verificationId,
   });
 
-  @override
-  State<OTPScreen> createState() => _OTPScreenState();
-}
+  void _verifyOTP({
+    required BuildContext context,
+    required WidgetRef ref,
+    required String userOTP,
+  }) async {
+    ref.read(authControllerProvider).verifyOTP(
+          context: context,
+          verificationId: verificationId,
+          userOTP: userOTP,
+        );
+  }
 
-class _OTPScreenState extends State<OTPScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -45,7 +55,14 @@ class _OTPScreenState extends State<OTPScreen> {
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-
+                if (value.length != 6) {
+                  return;
+                }
+                _verifyOTP(
+                  context: context,
+                  ref: ref,
+                  userOTP: value.trim(),
+                );
               },
             ),
           ),

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/common/utils/utils.dart';
 
 import '/features/auth/screens/otp_screen.dart';
+import '/features/auth/screens/user_information_screen.dart';
 
 final Provider<AuthRepository> authRepositoryProvider =
     Provider((ref) => AuthRepository(
@@ -43,6 +44,38 @@ class AuthRepository {
         },
         codeAutoRetrievalTimeout: (verificationId) {},
       );
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(
+        context: context,
+        content: e.message ?? 'Something went wrong!',
+      );
+      rethrow;
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        content: e.toString(),
+      );
+      rethrow;
+    }
+  }
+
+  void verifyOTP({
+    required BuildContext context,
+    required String verificationId,
+    required String userOTP,
+  }) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: userOTP,
+      );
+
+      firebaseAuth.signInWithCredential(credential).then((value) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          UserInformationScreen.routeName,
+          (route) => false,
+        );
+      });
     } on FirebaseAuthException catch (e) {
       showSnackBar(
         context: context,
