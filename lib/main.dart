@@ -12,7 +12,7 @@ Future<void> init(WidgetsBinding widgetsBinding) async {
 }
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensurºeInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await init(widgetsBinding);
   runApp(const MyApp());
 }
