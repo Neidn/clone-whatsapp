@@ -1,6 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import '/router.dart';
+
+import '/common/utils/colors.dart';
+
+import '/features/landing/screens/landing_screen.dart';
+
 import '/firebase_options.dart';
 
 Future<void> init(WidgetsBinding widgetsBinding) async {
@@ -25,21 +31,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter Demo Home Page'),
-        ),
-        body: const Center(
-          child: Text(
-            'This is a demo of the Material 3.0 theme!',
-            style: TextStyle(fontSize: 24),
-          ),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: backgroundColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: appBarColor,
+          foregroundColor: textColor,
         ),
       ),
+      onGenerateRoute: (settings) => generateRoute(settings),
+      home: LandingScreen(),
     );
   }
 }
