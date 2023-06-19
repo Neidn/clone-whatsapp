@@ -5,4 +5,4 @@ const String defaultImageUrl =
 const String usersPath = 'users';
 
 // firebase storage path
-const String profilePicturePath = 'profile_pictures';
+const String profilePicturePath = 'profilePictures';

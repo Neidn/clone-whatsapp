@@ -30,6 +30,19 @@ class AuthRepository {
     required this.firebaseFirestore,
   });
 
+  Future<UserModel?> getCurrentUserModelData() async {
+    final DocumentSnapshot<Map<String, dynamic>> userData =
+        await firebaseFirestore
+            .collection(usersPath)
+            .doc(firebaseAuth.currentUser?.uid)
+            .get();
+
+    if (userData.data() == null) {
+      return null;
+    }
+     return UserModel.fromMap(userData.data()!);
+  }
+
   void signInWithPhone({
     required BuildContext context,
     required String phoneNumber,
@@ -129,7 +142,11 @@ class AuthRepository {
         groupId: [],
       );
 
-      firebaseFirestore.collection(usersPath).doc(uid).set(user.toMap()).then((value) {
+      firebaseFirestore
+          .collection(usersPath)
+          .doc(uid)
+          .set(user.toMap())
+          .then((value) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           UserInformationScreen.routeName,
           (route) => false,

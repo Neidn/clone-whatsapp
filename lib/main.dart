@@ -6,7 +6,14 @@ import '/router.dart';
 
 import '/common/utils/colors.dart';
 
+import '/common/widgets/error.dart';
+import '/common/widgets/loader.dart';
+
+import '/models/user_model.dart';
+
+import 'screens/mobile_layout_screen.dart';
 import '/features/landing/screens/landing_screen.dart';
+import '/features/auth/controller/auth_controller.dart';
 
 import '/firebase_options.dart';
 
@@ -28,12 +35,12 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -46,7 +53,18 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: LandingScreen(),
+      home: ref.watch(userDataAuthProvider).when(
+            data: (UserModel? userData) {
+              if (userData == null) {
+                return const LandingScreen();
+              }
+              return const MobileLayoutScreen();
+            },
+            error: (error, stackTrace) => ErrorScreen(
+              error: error.toString(),
+            ),
+            loading: () => const Loader(),
+          ),
     );
   }
 }
