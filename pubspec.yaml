@@ -41,6 +41,9 @@ dependencies:
   cloud_firestore: ^4.8.1
   country_picker: ^2.0.20
   flutter_riverpod: ^2.3.6
+  cached_network_image: ^3.2.3
+  image_picker: ^0.8.9
+  permission_handler: ^10.3.0
 
 dev_dependencies:
   flutter_test:
