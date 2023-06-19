@@ -1,23 +1,25 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clone_whatsapp/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/common/utils/utils.dart';
+import '/common/utils/constants.dart';
 
-class UserInformationScreen extends StatefulWidget {
+class UserInformationScreen extends ConsumerStatefulWidget {
   static const routeName = '/user-information-screen';
 
   const UserInformationScreen({super.key});
 
   @override
-  State<UserInformationScreen> createState() => _UserInformationScreenState();
+  ConsumerState<UserInformationScreen> createState() =>
+      _UserInformationScreenState();
 }
 
-class _UserInformationScreenState extends State<UserInformationScreen> {
+class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
   late final TextEditingController _nameController;
-  final String _defaultImageUrl =
-      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
   File? _image;
 
@@ -43,6 +45,24 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     });
   }
 
+  void _storeUserData() async {
+    final String name = _nameController.text.trim();
+
+    if (name.isEmpty) {
+      showSnackBar(
+        context: context,
+        content: 'Please enter your name',
+      );
+      return;
+    }
+
+    ref.read(authControllerProvider).saveUserDataToFirebase(
+          context: context,
+          name: name,
+          profilePic: _image,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -56,8 +76,8 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                 children: [
                   _image == null
                       ? CircleAvatar(
-                          backgroundImage: CachedNetworkImageProvider(
-                            _defaultImageUrl,
+                          backgroundImage: const CachedNetworkImageProvider(
+                            defaultImageUrl,
                           ),
                           radius: size.width * 0.2,
                         )
@@ -89,7 +109,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => {},
+                    onPressed: () => _storeUserData(),
                     icon: const Icon(Icons.done),
                   ),
                 ],
