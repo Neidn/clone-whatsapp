@@ -1,4 +1,3 @@
-import 'package:clone_whatsapp/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,13 +5,19 @@ import '/common/utils/colors.dart';
 
 import '/models/user_model.dart';
 
+import '/features/auth/controller/auth_controller.dart';
+
+import '/features/chat/widgets/bottom_chat_field.dart';
+
 class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
+
+  final TextEditingController _messageController = TextEditingController();
 
   final String name;
   final String uid;
 
-  const MobileChatScreen({
+  MobileChatScreen({
     super.key,
     required this.name,
     required this.uid,
@@ -20,6 +25,8 @@ class MobileChatScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
@@ -57,6 +64,18 @@ class MobileChatScreen extends ConsumerWidget {
             icon: const Icon(
               Icons.call_outlined,
             ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          const Spacer(),
+          BottomChatField(
+            textEditingController: _messageController,
+          ),
+          Container(
+            height: size.height * 0.02,
+            color: bottomBackgroundColor,
           ),
         ],
       ),
