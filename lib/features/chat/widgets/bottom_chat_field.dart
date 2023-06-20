@@ -21,16 +21,16 @@ class _BottomChatFieldState extends State<BottomChatField> {
   Widget build(BuildContext context) {
     return Container(
       color: bottomBackgroundColor,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.emoji_emotions_outlined,
-                color: primaryColor,
-              ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.emoji_emotions_outlined,
+              color: primaryColor,
             ),
           ),
           Expanded(
@@ -38,8 +38,8 @@ class _BottomChatFieldState extends State<BottomChatField> {
               margin: const EdgeInsets.symmetric(
                 vertical: 10,
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
+              padding: const EdgeInsets.only(
+                right: 10,
               ),
               child: TextFormField(
                 onChanged: (value) {
@@ -62,13 +62,11 @@ class _BottomChatFieldState extends State<BottomChatField> {
                   hintText: 'Type a message',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(50),
+                      Radius.circular(30),
                     ),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
+                  contentPadding: EdgeInsets.all(10),
                 ),
               ),
             ),
@@ -92,20 +90,13 @@ class _BottomChatFieldState extends State<BottomChatField> {
                     ),
                   ],
                 )
-              : Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 8.0,
-                    right: 2,
-                    left: 2,
-                  ),
-                  child: CircleAvatar(
-                    backgroundColor: primaryColor,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
+              : CircleAvatar(
+                  backgroundColor: primaryColor,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.send,
+                      color: Colors.white,
                     ),
                   ),
                 ),
