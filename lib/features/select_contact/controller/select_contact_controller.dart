@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,3 +8,29 @@ final FutureProvider<List<Contact>> getContactsProvider =
     FutureProvider<List<Contact>>(
   (ref) => ref.watch(selectContactRepositoryProvider).getContacts(),
 );
+
+final Provider<SelectContactController> selectedContactControllerProvider =
+    Provider<SelectContactController>((ref) => SelectContactController(
+          ref: ref,
+          selectContactRepository: ref.watch(selectContactRepositoryProvider),
+        ));
+
+class SelectContactController {
+  final ProviderRef ref;
+  final SelectContactRepository selectContactRepository;
+
+  SelectContactController({
+    required this.ref,
+    required this.selectContactRepository,
+  });
+
+  void selectContact({
+    required BuildContext context,
+    required Contact selectedContact,
+  }) async {
+    await selectContactRepository.selectContact(
+      context: context,
+      selectedContact: selectedContact,
+    );
+  }
+}

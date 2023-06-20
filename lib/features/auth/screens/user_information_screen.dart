@@ -76,8 +76,8 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
                 children: [
                   _image == null
                       ? CircleAvatar(
-                          backgroundImage: const CachedNetworkImageProvider(
-                            defaultImageUrl,
+                          backgroundImage: const AssetImage(
+                            defaultImage,
                           ),
                           radius: size.width * 0.2,
                         )

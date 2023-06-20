@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '/common/utils/constants.dart';
+import '/common/utils/utils.dart';
+
+import '/models/user_model.dart';
+
+import '/screens/mobile_chat_screen.dart';
+
 final Provider<SelectContactRepository> selectContactRepositoryProvider =
     Provider<SelectContactRepository>(
   (ref) => SelectContactRepository(
@@ -24,10 +31,54 @@ class SelectContactRepository {
         throw Exception('Permission not granted');
       }
 
-      return await FlutterContacts.getContacts();
+      return await FlutterContacts.getContacts(
+        withProperties: true,
+        withThumbnail: true,
+      );
     } catch (e) {
       debugPrint(e.toString());
       return [];
+    }
+  }
+
+  Future<void> selectContact({
+    required BuildContext context,
+    required Contact selectedContact,
+  }) async {
+    try {
+      final QuerySnapshot<Map<String, dynamic>> userCollection =
+          await firebaseFirestore.collection(usersPath).get();
+      bool isFound = false;
+
+      for (var document in userCollection.docs) {
+        final UserModel userModel = UserModel.fromMap(document.data());
+
+        final String selectedPhoneNumber =
+            selectedContact.phones.first.number.replaceAll(RegExp('[- ]'), '');
+
+        print('selectedPhoneNumber: $selectedPhoneNumber');
+        print('userModel.phoneNumber: ${userModel.phoneNumber}');
+
+        if (userModel.phoneNumber == selectedPhoneNumber) {
+          isFound = true;
+          Navigator.of(context).pushNamed(MobileChatScreen.routeName);
+          return;
+        }
+      }
+
+      if (!isFound) {
+        showSnackBar(
+          context: context,
+          content: 'This number does not exist on this app',
+        );
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      showSnackBar(
+        context: context,
+        content: e.toString(),
+      );
     }
   }
 }

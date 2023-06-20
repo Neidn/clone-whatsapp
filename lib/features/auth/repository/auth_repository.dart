@@ -120,7 +120,7 @@ class AuthRepository {
   }) async {
     try {
       final String uid = firebaseAuth.currentUser!.uid;
-      String photoUrl = defaultImageUrl;
+      String photoUrl = '';
 
       if (profilePic == null) {
         return;
