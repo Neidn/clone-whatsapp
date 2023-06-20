@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clone_whatsapp/screens/mobile_layout_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class AuthRepository {
     if (userData.data() == null) {
       return null;
     }
-     return UserModel.fromMap(userData.data()!);
+    return UserModel.fromMap(userData.data()!);
   }
 
   void signInWithPhone({
@@ -148,7 +149,7 @@ class AuthRepository {
           .set(user.toMap())
           .then((value) {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          UserInformationScreen.routeName,
+          MobileLayoutScreen.routeName,
           (route) => false,
         );
       });
@@ -159,5 +160,11 @@ class AuthRepository {
       );
       rethrow;
     }
+  }
+
+  Stream<UserModel> userData({required String userId}) {
+    return firebaseFirestore.collection(usersPath).doc(userId).snapshots().map(
+          (event) => UserModel.fromMap(event.data()!),
+        );
   }
 }

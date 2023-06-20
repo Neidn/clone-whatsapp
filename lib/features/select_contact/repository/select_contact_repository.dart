@@ -56,12 +56,15 @@ class SelectContactRepository {
         final String selectedPhoneNumber =
             selectedContact.phones.first.number.replaceAll(RegExp('[- ]'), '');
 
-        print('selectedPhoneNumber: $selectedPhoneNumber');
-        print('userModel.phoneNumber: ${userModel.phoneNumber}');
-
         if (userModel.phoneNumber == selectedPhoneNumber) {
           isFound = true;
-          Navigator.of(context).pushNamed(MobileChatScreen.routeName);
+          Navigator.of(context).pushNamed(
+            MobileChatScreen.routeName,
+            arguments: {
+              'name': userModel.name,
+              'uid': userModel.uid,
+            },
+          );
           return;
         }
       }

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/common/utils/colors.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
+  static const String routeName = '/mobile-layout-screen';
+
   const MobileLayoutScreen({super.key});
 
   @override

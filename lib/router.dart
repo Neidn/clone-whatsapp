@@ -1,3 +1,4 @@
+import 'package:clone_whatsapp/screens/mobile_layout_screen.dart';
 import 'package:flutter/material.dart';
 
 import '/common/widgets/error.dart';
@@ -29,14 +30,24 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => const UserInformationScreen(),
       );
 
+    case MobileLayoutScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const MobileLayoutScreen(),
+      );
+
     case SelectContactScreen.routeName:
       return MaterialPageRoute(
         builder: (context) => const SelectContactScreen(),
       );
 
     case MobileChatScreen.routeName:
+      final arguments = settings.arguments as Map<String, dynamic>;
+
       return MaterialPageRoute(
-        builder: (context) => const MobileChatScreen(),
+        builder: (context) => MobileChatScreen(
+          name: arguments['name'],
+          uid: arguments['uid'],
+        ),
       );
 
     default:
