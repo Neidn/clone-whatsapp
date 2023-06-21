@@ -37,7 +37,12 @@ class ContactList extends ConsumerWidget {
                 ),
               ),
               title: Text(chatContact.name),
-              subtitle: Text(chatContact.lastMessage),
+              subtitle: Text(
+                chatContact.lastMessage,
+                style: const TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               trailing: Text(
                 timeago.format(
                   chatContact.sendTime,
