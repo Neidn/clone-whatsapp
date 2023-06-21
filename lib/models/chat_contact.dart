@@ -4,6 +4,7 @@ class ChatContact {
   final String contactId;
   final DateTime sendTime;
   final String lastMessage;
+  final String otherName;
 
   ChatContact({
     required this.name,
@@ -11,6 +12,7 @@ class ChatContact {
     required this.contactId,
     required this.sendTime,
     required this.lastMessage,
+    required this.otherName,
   });
 
   factory ChatContact.fromMap(Map<String, dynamic> map) => ChatContact(
@@ -19,6 +21,7 @@ class ChatContact {
         contactId: map['contactId'] ?? '',
         sendTime: DateTime.parse(map['sendTime']),
         lastMessage: map['lastMessage'] ?? '',
+        otherName: map['otherName'] ?? '',
       );
 
   Map<String, dynamic> toMap() => {
@@ -27,5 +30,6 @@ class ChatContact {
         'contactId': contactId,
         'sendTime': sendTime.toString(),
         'lastMessage': lastMessage,
+        'otherName': otherName,
       };
 }

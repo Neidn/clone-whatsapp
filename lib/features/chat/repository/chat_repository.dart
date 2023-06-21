@@ -54,6 +54,7 @@ class ChatRepository {
             contactId: chatContact.contactId,
             sendTime: chatContact.sendTime,
             lastMessage: chatContact.lastMessage,
+            otherName: chatContact.otherName,
           ),
         );
       }
@@ -101,17 +102,15 @@ class ChatRepository {
         throw Exception('User not found');
       }
 
-      var userDateMap = await firestore
-          .collection(usersPath)
-          .doc(firebaseAuth.currentUser!.uid)
-          .get();
+      var receiverUserDataMap =
+          await firestore.collection(usersPath).doc(receiverUserId).get();
 
-      if (userDateMap.data() == null) {
+      if (receiverUserDataMap.data() == null) {
         throw Exception('User data not found');
       }
 
       final UserModel receiverUserModel = UserModel.fromMap(
-        userDateMap.data()!,
+        receiverUserDataMap.data()!,
       );
 
       final String messageId = const Uuid().v4();
@@ -156,6 +155,7 @@ class ChatRepository {
       contactId: senderUserModel.uid,
       sendTime: sendTime,
       lastMessage: text,
+      otherName: receiverUserModel.name,
     );
 
     await firestore
@@ -174,6 +174,7 @@ class ChatRepository {
       contactId: receiverUserModel.uid,
       sendTime: sendTime,
       lastMessage: text,
+      otherName: senderUserModel.name,
     );
 
     await firestore

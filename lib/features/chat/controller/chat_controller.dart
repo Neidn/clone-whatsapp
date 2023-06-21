@@ -40,9 +40,10 @@ class ChatController {
   }) async =>
       ref.read(userDataAuthProvider).whenData(
             (UserModel? userModel) => chatRepository.sendTextMessage(
-                context: context,
-                text: text,
-                receiverUserId: receiverUserId,
-                senderUserModel: userModel!),
+              context: context,
+              text: text,
+              receiverUserId: receiverUserId,
+              senderUserModel: userModel!,
+            ),
           );
 }

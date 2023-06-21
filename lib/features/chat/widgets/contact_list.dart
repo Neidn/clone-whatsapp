@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -31,7 +32,9 @@ class ContactList extends ConsumerWidget {
                 },
               ),
               leading: CircleAvatar(
-                backgroundImage: NetworkImage(chatContact.profilePic),
+                backgroundImage: CachedNetworkImageProvider(
+                  chatContact.profilePic,
+                ),
               ),
               title: Text(chatContact.name),
               subtitle: Text(chatContact.lastMessage),
