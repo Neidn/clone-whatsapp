@@ -3,6 +3,8 @@ const String defaultImage =
 
 // firestore path
 const String usersPath = 'users';
+const String chatsPath = 'chats';
+const String messagesPath = 'messages';
 
 // firebase storage path
 const String profilePicturePath = 'profilePictures';

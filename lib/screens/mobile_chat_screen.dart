@@ -12,8 +12,6 @@ import '/features/chat/widgets/bottom_chat_field.dart';
 class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
 
-  final TextEditingController _messageController = TextEditingController();
-
   final String name;
   final String uid;
 
@@ -71,7 +69,7 @@ class MobileChatScreen extends ConsumerWidget {
         children: [
           const Spacer(),
           BottomChatField(
-            textEditingController: _messageController,
+            receiverUserId: uid,
           ),
           Container(
             height: size.height * 0.02,

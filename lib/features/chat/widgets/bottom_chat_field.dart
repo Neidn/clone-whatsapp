@@ -1,21 +1,48 @@
+import 'package:clone_whatsapp/features/chat/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/common/utils/colors.dart';
 
-class BottomChatField extends StatefulWidget {
-  final TextEditingController textEditingController;
+class BottomChatField extends ConsumerStatefulWidget {
+  final String receiverUserId;
 
   const BottomChatField({
     super.key,
-    required this.textEditingController,
+    required this.receiverUserId,
   });
 
   @override
-  State<BottomChatField> createState() => _BottomChatFieldState();
+  ConsumerState<BottomChatField> createState() => _BottomChatFieldState();
 }
 
-class _BottomChatFieldState extends State<BottomChatField> {
+class _BottomChatFieldState extends ConsumerState<BottomChatField> {
+  late final TextEditingController _messageController;
+
   bool _isTyping = false;
+
+  @override
+  void initState() {
+    _messageController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage() {
+    if (_isTyping) {
+      ref.read(chatControllerProvider).sendTextMessage(
+            context: context,
+            text: _messageController.text,
+            receiverUserId: widget.receiverUserId,
+          );
+      _messageController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +82,7 @@ class _BottomChatFieldState extends State<BottomChatField> {
                 },
                 maxLines: 5,
                 minLines: 1,
-                controller: widget.textEditingController,
+                controller: _messageController,
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: textFieldBackgroundColor,
@@ -93,7 +120,7 @@ class _BottomChatFieldState extends State<BottomChatField> {
               : CircleAvatar(
                   backgroundColor: primaryColor,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () => _sendMessage(),
                     icon: const Icon(
                       Icons.send,
                       color: Colors.white,
