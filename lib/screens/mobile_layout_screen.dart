@@ -1,9 +1,9 @@
-import 'package:clone_whatsapp/features/chat/screens/chat_screen.dart';
-import 'package:clone_whatsapp/features/select_contact/screens/select_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/common/utils/colors.dart';
+
+import 'package:clone_whatsapp/features/chat/screens/chat_screen.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const String routeName = '/mobile-layout-screen';
@@ -58,23 +58,11 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen> {
             const Center(
               child: Text('Camera'),
             ),
-            ChatScreen(),
+            const ChatScreen(),
             const Center(
               child: Text('Settings'),
             ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const SelectContactScreen(),
-          ),
-        ),
-        backgroundColor: messageColor,
-        child: const Icon(
-          Icons.chat,
-          color: Colors.white,
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -62,6 +62,32 @@ class ChatRepository {
     });
   }
 
+  Stream<List<Message>> getChats({
+    required String receiverUserId,
+  }) {
+    return firestore
+        .collection(usersPath)
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection(chatsPath)
+        .doc(receiverUserId)
+        .collection(messagesPath)
+        .orderBy('sendTime', descending: true)
+        .snapshots()
+        .map(
+      (event) {
+        final List<Message> messages = [];
+
+        for (QueryDocumentSnapshot<Map<String, dynamic>> doc in event.docs) {
+          final Message message = Message.fromMap(doc.data());
+
+          messages.add(message);
+        }
+
+        return messages;
+      },
+    );
+  }
+
   void sendTextMessage({
     required BuildContext context,
     required String text,

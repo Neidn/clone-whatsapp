@@ -1,3 +1,4 @@
+import 'package:clone_whatsapp/features/chat/widgets/chat_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +16,7 @@ class MobileChatScreen extends ConsumerWidget {
   final String name;
   final String uid;
 
-  MobileChatScreen({
+  const MobileChatScreen({
     super.key,
     required this.name,
     required this.uid,
@@ -67,7 +68,11 @@ class MobileChatScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          const Spacer(),
+          Expanded(
+            child: ChatList(
+              receiverUserId: uid,
+            ),
+          ),
           BottomChatField(
             receiverUserId: uid,
           ),

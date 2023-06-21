@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '/common/utils/colors.dart';
 
-import '/widgets/contact_list.dart';
+import '../widgets/contact_list.dart';
+
+import '/features/select_contact/screens/select_contact_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chat-screen';
@@ -37,9 +39,13 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async => await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SelectContactScreen(),
+                ),
+              ),
             icon: const Icon(
-              Icons.more_vert,
+              Icons.edit_outlined,
               color: primaryColor,
             ),
           ),

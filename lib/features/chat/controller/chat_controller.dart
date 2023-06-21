@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/models/user_model.dart';
 import '/models/chat_contact.dart';
+import 'package:clone_whatsapp/models/message.dart';
 
 import '/features/chat/repository/chat_repository.dart';
 
@@ -23,8 +24,14 @@ class ChatController {
     required this.ref,
   });
 
-  Stream<List<ChatContact>> chatContacts() =>
-      chatRepository.getChatContacts();
+  Stream<List<ChatContact>> chatContacts() => chatRepository.getChatContacts();
+
+  Stream<List<Message>> messages({
+    required String receiverUserId,
+  }) =>
+      chatRepository.getChats(
+        receiverUserId: receiverUserId,
+      );
 
   void sendTextMessage({
     required BuildContext context,
