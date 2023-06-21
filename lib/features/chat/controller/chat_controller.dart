@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/models/user_model.dart';
+import '/models/chat_contact.dart';
 
 import '/features/chat/repository/chat_repository.dart';
 
@@ -21,6 +22,9 @@ class ChatController {
     required this.chatRepository,
     required this.ref,
   });
+
+  Stream<List<ChatContact>> chatContacts() =>
+      chatRepository.getChatContacts();
 
   void sendTextMessage({
     required BuildContext context,

@@ -28,6 +28,40 @@ class ChatRepository {
     required this.firebaseAuth,
   });
 
+  Stream<List<ChatContact>> getChatContacts() {
+    return firestore
+        .collection(usersPath)
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection(chatsPath)
+        .snapshots()
+        .asyncMap((event) async {
+      final List<ChatContact> chatContacts = [];
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in event.docs) {
+        final ChatContact chatContact = ChatContact.fromMap(doc.data());
+
+        final DocumentSnapshot<Map<String, dynamic>> userData = await firestore
+            .collection(usersPath)
+            .doc(chatContact.contactId)
+            .get();
+
+        final UserModel userModel = UserModel.fromMap(userData.data()!);
+
+        chatContacts.add(
+          ChatContact(
+            name: userModel.name,
+            profilePic: userModel.profilePic,
+            contactId: chatContact.contactId,
+            sendTime: chatContact.sendTime,
+            lastMessage: chatContact.lastMessage,
+          ),
+        );
+      }
+
+      return chatContacts;
+    });
+  }
+
   void sendTextMessage({
     required BuildContext context,
     required String text,

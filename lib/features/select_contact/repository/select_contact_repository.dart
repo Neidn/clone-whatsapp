@@ -58,7 +58,7 @@ class SelectContactRepository {
 
         if (userModel.phoneNumber == selectedPhoneNumber) {
           isFound = true;
-          Navigator.of(context).pushNamed(
+          await Navigator.of(context).pushNamed(
             MobileChatScreen.routeName,
             arguments: {
               'name': userModel.name,

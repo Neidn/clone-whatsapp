@@ -1,13 +1,16 @@
-import 'package:clone_whatsapp/screens/mobile_layout_screen.dart';
 import 'package:flutter/material.dart';
 
 import '/common/widgets/error.dart';
+
+import '/screens/mobile_layout_screen.dart';
+import '/screens/mobile_chat_screen.dart';
 
 import '/features/auth/screens/otp_screen.dart';
 import '/features/auth/screens/login_screen.dart';
 import '/features/auth/screens/user_information_screen.dart';
 
-import '/screens/mobile_chat_screen.dart';
+import '/features/chat/screens/chat_screen.dart';
+
 import '/features/select_contact/screens/select_contact_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -48,6 +51,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           name: arguments['name'],
           uid: arguments['uid'],
         ),
+      );
+
+    case ChatScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const ChatScreen(),
       );
 
     default:

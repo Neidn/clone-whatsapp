@@ -1,3 +1,4 @@
+import 'package:clone_whatsapp/features/chat/screens/chat_screen.dart';
 import 'package:clone_whatsapp/features/select_contact/screens/select_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,35 +43,6 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: appBarColor,
-        centerTitle: false,
-        title: const Text(
-          'WhatsApp',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.camera_alt_outlined,
-              color: primaryColor,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.more_vert,
-              color: primaryColor,
-            ),
-          ),
-        ],
-      ),
       body: SafeArea(
         child: PageView(
           controller: _pageController,
@@ -86,9 +58,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen> {
             const Center(
               child: Text('Camera'),
             ),
-            const Center(
-              child: Text('Chats'),
-            ),
+            ChatScreen(),
             const Center(
               child: Text('Settings'),
             ),
