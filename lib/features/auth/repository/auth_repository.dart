@@ -167,4 +167,14 @@ class AuthRepository {
           (event) => UserModel.fromMap(event.data()!),
         );
   }
+
+  void setUserState({
+    required bool isOnline,
+  }) async =>
+      await firebaseFirestore
+          .collection(usersPath)
+          .doc(firebaseAuth.currentUser!.uid)
+          .update({
+        'isOnline': isOnline,
+      });
 }
