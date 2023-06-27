@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,4 +49,22 @@ class ChatController {
               senderUserModel: userModel!,
             ),
           );
+
+  void sendFileMessage({
+    required BuildContext context,
+    required File file,
+    required String receiverUserId,
+    required MessageTypeEnum messageType,
+  }) async {
+    ref.read(userDataAuthProvider).whenData(
+          (UserModel? senderUserModel) => chatRepository.sendFileMessage(
+            context: context,
+            file: file,
+            receiverUserId: receiverUserId,
+            senderUserModel: senderUserModel!,
+            ref: ref,
+            messageType: messageType,
+          ),
+        );
+  }
 }
