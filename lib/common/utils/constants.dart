@@ -1,5 +1,10 @@
-const String defaultImage =
-    "assets/images/blank-profile.png";
+const String defaultImage = "assets/images/blank-profile.png";
+
+// Chat Constants
+Map<String, int> chatLines = {
+  "min": 1,
+  "max": 5,
+};
 
 // firestore path
 const String usersPath = 'users';
