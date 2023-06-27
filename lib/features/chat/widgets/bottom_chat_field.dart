@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
 import 'package:clone_whatsapp/features/chat/controller/chat_controller.dart';
+import 'package:clone_whatsapp/features/chat/widgets/picker_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -71,8 +72,34 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     );
   }
 
+  void _takePhoto() async {
+    final File? image = await pickImageFromCamera(context: context);
+    if (image == null) {
+      return;
+    }
+
+    _sendFileMessage(
+      file: image,
+      messageType: MessageTypeEnum.image,
+    );
+  }
+
+  void _selectVideo() async {
+    final File? video = await pickVideoFromGallery(context: context);
+    if (video == null) {
+      return;
+    }
+
+    _sendFileMessage(
+      file: video,
+      messageType: MessageTypeEnum.video,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Container(
       color: bottomBackgroundColor,
       padding: const EdgeInsets.symmetric(
@@ -81,10 +108,22 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
       child: Row(
         children: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.emoji_emotions_outlined,
+            onPressed: () async {
+              showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => PickerBottomSheet(
+                  size: size,
+                  takePhoto: _takePhoto,
+                  selectImage: _selectImage,
+                  selectVideo: _selectVideo,
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.add,
               color: primaryColor,
+              size: size.width * 0.07,
             ),
           ),
           Expanded(
@@ -129,7 +168,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
               ? Row(
                   children: [
                     IconButton(
-                      onPressed: () => _selectImage(),
+                      onPressed: () => _takePhoto(),
                       icon: const Icon(
                         Icons.camera_alt_outlined,
                         color: primaryColor,
