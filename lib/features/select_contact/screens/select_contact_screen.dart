@@ -61,7 +61,7 @@ class SelectContactScreen extends ConsumerWidget {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text(
-                        contact.displayName ?? '',
+                        contact.displayName,
                         style: const TextStyle(fontSize: 18),
                       ),
                       leading: contact.photo == null

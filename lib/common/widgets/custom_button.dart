@@ -1,4 +1,3 @@
-import 'package:clone_whatsapp/common/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {

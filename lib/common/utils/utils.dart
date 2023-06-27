@@ -19,7 +19,7 @@ Future<File?> pickImageFromGallery({
   required BuildContext context,
 }) async {
   try {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 

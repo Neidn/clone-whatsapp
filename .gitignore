@@ -56,5 +56,4 @@ app.*.map.json
 
 # Ios Pods
 /ios/Podfile.*
-/ios/Podfile
 /ios/Pods/

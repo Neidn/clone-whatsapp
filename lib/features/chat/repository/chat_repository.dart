@@ -297,7 +297,7 @@ class ChatRepository {
 
       _saveMessageToMessageSubCollection(
         receiverUserId: receiverUserId,
-        text: text,
+        text: imageUrl,
         sendTime: sendTime,
         messageId: messageId,
         name: senderUserModel.name,
