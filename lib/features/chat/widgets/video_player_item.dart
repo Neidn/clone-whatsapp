@@ -22,10 +22,9 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     _videoPlayerController = CachedVideoPlayerController.network(
       widget.videoUrl,
     )
-      ..addListener(() {})
+      ..addListener(() => _videoPlayerListener())
       ..initialize().then((_) {
-        setState(() {});
-        return _videoPlayerController.setVolume(1);
+        _videoPlayerController.setVolume(1);
       });
 
     super.initState();
@@ -49,22 +48,34 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     });
   }
 
+  void _videoPlayerListener() {
+    if (_videoPlayerController.value.isPlaying) {
+      setState(() {
+        _isPlaying = true;
+      });
+    } else {
+      setState(() {
+        _isPlaying = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: _videoPlayerController.value.aspectRatio,
       child: Stack(
         children: [
-          CachedVideoPlayer(
-            _videoPlayerController,
+          InkWell(
+            onTap: () => _playPauseVideo(),
+            child: CachedVideoPlayer(
+              _videoPlayerController,
+            ),
           ),
           Align(
             alignment: Alignment.center,
-            child: IconButton(
-              onPressed: () => _playPauseVideo(),
-              icon: Icon(
-                _isPlaying ? Icons.pause_circle : Icons.play_circle,
-              ),
+            child: Icon(
+              _isPlaying ? Icons.pause_circle : Icons.play_circle,
             ),
           ),
         ],

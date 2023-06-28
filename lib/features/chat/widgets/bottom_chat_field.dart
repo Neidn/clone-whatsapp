@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
@@ -34,25 +33,27 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   @override
   void initState() {
     _messageController = TextEditingController();
+    _focusNode.addListener(_onFocusChange);
     super.initState();
   }
 
   @override
   void dispose() {
     _messageController.dispose();
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
     super.dispose();
   }
 
   void _checkTyping() {
+    _hideEmojiContainer();
     if (_messageController.text.isNotEmpty) {
       setState(() {
         _isTyping = true;
-        _isShowEmojiContainer = false;
       });
     } else {
       setState(() {
         _isTyping = false;
-        _isShowEmojiContainer = false;
       });
     }
   }
@@ -128,6 +129,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   }
 
   void _showKeyboard() {
+    _hideEmojiContainer();
     _focusNode.requestFocus();
   }
 
@@ -142,6 +144,12 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     } else {
       _showEmojiContainer();
       _hideKeyboard();
+    }
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      _hideEmojiContainer();
     }
   }
 
