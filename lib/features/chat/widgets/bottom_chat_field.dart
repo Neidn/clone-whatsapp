@@ -84,6 +84,11 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   }
 
   void _sendVoiceMessage() async {
+    final status = await Permission.microphone.request();
+    if (!status.isGranted || status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not allowed');
+    }
+
     if (!_isRecorderInit) {
       return;
     }
@@ -208,9 +213,8 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   }
 
   void _openAudio() async {
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted || _soundRecorder == null) {
-      throw RecordingPermissionException('Microphone permission not allowed');
+    if (_soundRecorder == null) {
+      throw RecordingPermissionException('Cannot open recorder. try again');
     }
 
     await _soundRecorder!.openRecorder();
