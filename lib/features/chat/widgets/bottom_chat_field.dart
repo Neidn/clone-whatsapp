@@ -9,6 +9,9 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '/common/utils/colors.dart';
 
@@ -27,14 +30,19 @@ class BottomChatField extends ConsumerStatefulWidget {
 class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   late final TextEditingController _messageController;
   final FocusNode _focusNode = FocusNode();
+  FlutterSoundRecorder? _soundRecorder;
 
   bool _isTyping = false;
   bool _isShowEmojiContainer = false;
+  bool _isRecorderInit = false;
+  bool _isRecording = false;
 
   @override
   void initState() {
     _messageController = TextEditingController();
     _focusNode.addListener(_onFocusChange);
+    _soundRecorder = FlutterSoundRecorder();
+    _openAudio();
     super.initState();
   }
 
@@ -43,6 +51,11 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     _messageController.dispose();
     _focusNode.removeListener(_onFocusChange);
     _focusNode.dispose();
+    _soundRecorder!.closeRecorder();
+    setState(() {
+      _soundRecorder = null;
+      _isRecorderInit = false;
+    });
     super.dispose();
   }
 
@@ -59,7 +72,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     }
   }
 
-  void _sendMessage() {
+  void _sendMessage() async {
     if (_isTyping) {
       ref.read(chatControllerProvider).sendTextMessage(
             context: context,
@@ -68,6 +81,32 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
           );
       _messageController.clear();
     }
+  }
+
+  void _sendVoiceMessage() async {
+    if (!_isRecorderInit) {
+      return;
+    }
+
+    final Directory tempDir = await getTemporaryDirectory();
+    final String tempPath = '${tempDir.path}/$soundTempFile';
+
+    if (_isRecording) {
+      _soundRecorder!.stopRecorder().then((_) {
+        _sendFileMessage(
+          file: File(tempPath),
+          messageType: MessageTypeEnum.audio,
+        );
+      });
+    } else {
+      await _soundRecorder!.startRecorder(
+        toFile: tempPath,
+      );
+    }
+
+    setState(() {
+      _isRecording = !_isRecording;
+    });
   }
 
   void _sendFileMessage({
@@ -168,6 +207,18 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     }
   }
 
+  void _openAudio() async {
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted || _soundRecorder == null) {
+      throw RecordingPermissionException('Microphone permission not allowed');
+    }
+
+    await _soundRecorder!.openRecorder();
+    setState(() {
+      _isRecorderInit = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -258,9 +309,11 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.mic_none_outlined,
+                          onPressed: () => _sendVoiceMessage(),
+                          icon: Icon(
+                            _isRecording
+                                ? Icons.close
+                                : Icons.mic_none_outlined,
                             color: primaryColor,
                           ),
                         ),

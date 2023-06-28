@@ -15,3 +15,6 @@ const String messagesPath = 'messages';
 
 // firebase storage path
 const String profilePicturePath = 'profilePictures';
+
+// Temp File Name
+const String soundTempFile = '_temp_sound.aac';
