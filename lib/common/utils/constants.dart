@@ -1,5 +1,8 @@
 const String defaultImage = "assets/images/blank-profile.png";
 
+// API Constants
+const String apiKey = 'wCiaB5opYFRS3tWNgvnvb73yRvUJmICl';
+
 // Chat Constants
 Map<String, int> chatLines = {
   "min": 1,

@@ -6,6 +6,7 @@ import 'package:clone_whatsapp/common/utils/utils.dart';
 import 'package:clone_whatsapp/features/chat/controller/chat_controller.dart';
 import 'package:clone_whatsapp/features/chat/widgets/picker_bottom_sheet.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -116,6 +117,20 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     );
   }
 
+  void _selectGIF() {
+    pickGIF(context: context).then((GiphyGif? gif) {
+      if (gif == null || gif.embedUrl == null) {
+        return;
+      }
+
+      ref.read(chatControllerProvider).sendGIFMessage(
+            context: context,
+            gifUrl: gif.embedUrl!,
+            receiverUserId: widget.receiverUserId,
+          );
+    });
+  }
+
   void _showEmojiContainer() {
     setState(() {
       _isShowEmojiContainer = true;
@@ -177,6 +192,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                     takePhoto: _takePhoto,
                     selectImage: _selectImage,
                     selectVideo: _selectVideo,
+                    selectGIF: _selectGIF,
                   ),
                 ),
                 icon: Icon(

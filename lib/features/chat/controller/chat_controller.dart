@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,6 +66,31 @@ class ChatController {
             ref: ref,
             messageType: messageType,
           ),
+        );
+  }
+
+  void sendGIFMessage({
+    required BuildContext context,
+    required String gifUrl,
+    required String receiverUserId,
+  }) async {
+    // gifUrl = https://giphy.com/embed/dK0somWWBmQEyvZSrI
+    // realGifUrl = https://media.giphy.com/media/dK0somWWBmQEyvZSrI/giphy.webp
+    int gifUrlPartIndex = gifUrl.lastIndexOf('/') + 1;
+
+    String gifPartUrl = gifUrl.substring(gifUrlPartIndex);
+
+    // random int of [1 , 2 , 3]
+    int randomInt = Random().nextInt(3) + 1;
+
+    gifUrl = 'https://media$randomInt.giphy.com/media/$gifPartUrl/giphy.webp';
+
+    ref.read(userDataAuthProvider).whenData(
+          (UserModel? senderUserModel) => chatRepository.sendGIFMessage(
+              context: context,
+              gifUrl: gifUrl,
+              receiverUserId: receiverUserId,
+              senderUserModel: senderUserModel!),
         );
   }
 }

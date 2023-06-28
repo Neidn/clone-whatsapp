@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/features/chat/widgets/video_player_item.dart';
+import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 
 class DisplayTextImageGIF extends StatelessWidget {
@@ -17,8 +18,9 @@ class DisplayTextImageGIF extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (type) {
       case MessageTypeEnum.image:
+        return _displayImage(context);
       case MessageTypeEnum.gif:
-        return _displayImageGIF(context);
+        return _displayGIF(context);
       case MessageTypeEnum.video:
         return _displayVideo(context);
       case MessageTypeEnum.text:
@@ -36,7 +38,13 @@ class DisplayTextImageGIF extends StatelessWidget {
     );
   }
 
-  Widget _displayImageGIF(BuildContext context) {
+  Widget _displayImage(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: message,
+    );
+  }
+
+  _displayGIF(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: message,
     );

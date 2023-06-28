@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 class PickerBottomSheet extends StatelessWidget {
   final Size size;
+  final VoidCallback selectGIF;
   final VoidCallback takePhoto;
   final VoidCallback selectImage;
-
   final VoidCallback selectVideo;
 
   const PickerBottomSheet({
     super.key,
     required this.size,
+    required this.selectGIF,
     required this.takePhoto,
     required this.selectImage,
     required this.selectVideo,
@@ -37,6 +38,18 @@ class PickerBottomSheet extends StatelessWidget {
             ),
             child: Wrap(
               children: [
+                // GIF
+                ListTile(
+                  leading: const Icon(
+                    Icons.gif_box,
+                    color: primaryColor,
+                  ),
+                  title: const Text('GIF'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    selectGIF();
+                  },
+                ),
                 // Camera
                 ListTile(
                   leading: const Icon(
