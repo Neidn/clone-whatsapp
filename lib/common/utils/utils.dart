@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 
 void showSnackBar({
@@ -97,7 +98,7 @@ Future<GiphyGif?> pickGIF({
   try {
     final GiphyGif? gif = await Giphy.getGif(
       context: context,
-      apiKey: apiKey,
+      apiKey: dotenv.get('GIPHY_API_KEY'),
       showAttribution: false,
     );
 

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -7,6 +8,7 @@ import '/router.dart';
 
 import '/common/utils/colors.dart';
 
+import 'package:clone_whatsapp/common/utils/constants.dart';
 import '/common/widgets/error.dart';
 import '/common/widgets/loader.dart';
 
@@ -21,6 +23,8 @@ import '/firebase_options.dart';
 Future<void> init(WidgetsBinding widgetsBinding) async {
   print('Initializing...');
   timeago.setLocaleMessages('ko', timeago.KoMessages());
+
+  await dotenv.load(fileName: configFileName);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

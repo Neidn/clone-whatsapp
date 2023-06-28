@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/features/chat/widgets/video_player_item.dart';
-import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 
 class DisplayTextImageGIF extends StatelessWidget {
