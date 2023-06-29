@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 class DisplayTextImageGIF extends StatefulWidget {
-  final String message;
   final MessageTypeEnum type;
+  final String message;
+  final String date;
 
-  const DisplayTextImageGIF(
-      {super.key, required this.message, required this.type});
+  const DisplayTextImageGIF({
+    super.key,
+    required this.type,
+    required this.message,
+    this.date = '',
+  });
 
   @override
   State<DisplayTextImageGIF> createState() => _DisplayTextImageGIFState();

@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
+import 'package:clone_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
 import 'package:clone_whatsapp/features/chat/controller/chat_controller.dart';
+import 'package:clone_whatsapp/features/chat/widgets/message_reply_preview.dart';
 import 'package:clone_whatsapp/features/chat/widgets/picker_bottom_sheet.dart';
+import 'package:clone_whatsapp/models/message_reply.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
@@ -52,10 +55,6 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     _focusNode.removeListener(_onFocusChange);
     _focusNode.dispose();
     _soundRecorder!.closeRecorder();
-    setState(() {
-      _soundRecorder = null;
-      _isRecorderInit = false;
-    });
     super.dispose();
   }
 
@@ -226,11 +225,16 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final double commonGap = size.width * 0.02;
 
-    final commonGap = size.width * 0.02;
+    final MessageReply? messageReply = ref.watch(messageReplyProvider);
+    final bool isShowMessageReply = (messageReply != null);
 
     return Column(
       children: [
+        // Message Reply
+        if (isShowMessageReply) MessageReplyPreview(),
+
         Container(
           color: bottomBackgroundColor,
           padding: EdgeInsets.symmetric(

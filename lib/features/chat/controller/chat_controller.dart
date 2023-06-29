@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
+import 'package:clone_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,15 +42,19 @@ class ChatController {
     required BuildContext context,
     required String text,
     required String receiverUserId,
-  }) async =>
-      ref.read(userDataAuthProvider).whenData(
-            (UserModel? userModel) => chatRepository.sendTextMessage(
-              context: context,
-              text: text,
-              receiverUserId: receiverUserId,
-              senderUserModel: userModel!,
-            ),
-          );
+  }) async {
+    ref.read(userDataAuthProvider).whenData(
+          (UserModel? userModel) => chatRepository.sendTextMessage(
+            context: context,
+            text: text,
+            receiverUserId: receiverUserId,
+            senderUserModel: userModel!,
+            messageReply: ref.read(messageReplyProvider),
+          ),
+        );
+
+    ref.read(messageReplyProvider.notifier).update(null);
+  }
 
   void sendFileMessage({
     required BuildContext context,
@@ -65,8 +70,10 @@ class ChatController {
             senderUserModel: senderUserModel!,
             ref: ref,
             messageType: messageType,
+            messageReply: ref.read(messageReplyProvider),
           ),
         );
+    ref.read(messageReplyProvider.notifier).update(null);
   }
 
   void sendGIFMessage({
@@ -87,10 +94,14 @@ class ChatController {
 
     ref.read(userDataAuthProvider).whenData(
           (UserModel? senderUserModel) => chatRepository.sendGIFMessage(
-              context: context,
-              gifUrl: gifUrl,
-              receiverUserId: receiverUserId,
-              senderUserModel: senderUserModel!),
+            context: context,
+            gifUrl: gifUrl,
+            receiverUserId: receiverUserId,
+            senderUserModel: senderUserModel!,
+            messageReply: ref.read(messageReplyProvider),
+          ),
         );
+    
+    ref.read(messageReplyProvider.notifier).update(null);
   }
 }

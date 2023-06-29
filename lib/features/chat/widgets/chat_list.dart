@@ -1,3 +1,6 @@
+import 'package:clone_whatsapp/common/enums/message_enum.dart';
+import 'package:clone_whatsapp/common/providers/message_reply_provider.dart';
+import 'package:clone_whatsapp/models/message_reply.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -36,6 +39,19 @@ class _ChatListState extends ConsumerState<ChatList> {
     _messageScrollController.dispose();
     super.dispose();
   }
+
+  void _onMessageSwipe({
+    required String message,
+    required bool isMe,
+    required MessageTypeEnum type,
+  }) =>
+      ref.read(messageReplyProvider.notifier).update(
+            MessageReply(
+              message: message,
+              isMe: isMe,
+              type: type,
+            ),
+          );
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +92,14 @@ class _ChatListState extends ConsumerState<ChatList> {
                 message: message.text,
                 date: sendTime,
                 type: message.type,
+                repliedText: message.repliedMessage,
+                username: message.repliedTo,
+                repliedType: message.repliedType,
+                onRightSwipe: () => _onMessageSwipe(
+                  message: message.text,
+                  isMe: isMe,
+                  type: message.type,
+                ),
               );
             }
 
@@ -83,6 +107,14 @@ class _ChatListState extends ConsumerState<ChatList> {
               message: message.text,
               date: sendTime,
               type: message.type,
+              repliedText: message.repliedMessage,
+              username: message.repliedTo,
+              repliedType: message.repliedType,
+              onRightSwipe: () => _onMessageSwipe(
+                message: message.text,
+                isMe: isMe,
+                type: message.type,
+              ),
             );
           },
         );

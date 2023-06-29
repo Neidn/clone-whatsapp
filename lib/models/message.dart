@@ -8,6 +8,9 @@ class Message {
   final DateTime sendTime;
   final String messageId;
   final bool isSeen;
+  final String repliedMessage;
+  final String repliedTo;
+  final MessageTypeEnum repliedType;
 
   Message({
     required this.senderId,
@@ -17,6 +20,9 @@ class Message {
     required this.sendTime,
     required this.messageId,
     required this.isSeen,
+    required this.repliedMessage,
+    required this.repliedTo,
+    required this.repliedType,
   });
 
   factory Message.fromMap(Map<String, dynamic> map) => Message(
@@ -27,6 +33,10 @@ class Message {
         sendTime: DateTime.parse(map['sendTime']),
         messageId: map['messageId'] ?? '',
         isSeen: map['isSeen'] ?? false,
+        repliedMessage: map['repliedMessage'] ?? '',
+        repliedTo: map['repliedTo'] ?? '',
+        repliedType:
+            MessageTypeEnum.values[map['repliedType'] ?? MessageTypeEnum.text],
       );
 
   Map<String, dynamic> toMap() => {
@@ -37,5 +47,8 @@ class Message {
         'sendTime': sendTime.toString(),
         'messageId': messageId,
         'isSeen': isSeen,
+        'repliedMessage': repliedMessage,
+        'repliedTo': repliedTo,
+        'repliedType': repliedType.index,
       };
 }

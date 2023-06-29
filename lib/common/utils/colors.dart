@@ -18,3 +18,5 @@ const chatBarMessage = Color.fromRGBO(30, 36, 40, 1);
 const mobileChatBoxColor = Color.fromRGBO(31, 44, 52, 1);
 const greyColor = Colors.grey;
 const blackColor = Colors.black;
+const replyMyBorderColor = Color.fromRGBO(0, 167, 131, 1);
+const replyOtherBorderColor = Color.fromRGBO(0, 131, 167, 1);

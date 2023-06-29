@@ -67,18 +67,18 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           onPageChanged: _onPageChanged,
-          children: [
-            const Center(
+          children: const [
+            Center(
               child: Text('Status'),
             ),
-            const Center(
+            Center(
               child: Text('Calls'),
             ),
-            const Center(
+            Center(
               child: Text('Camera'),
             ),
-            const ChatScreen(),
-            const Center(
+            ChatScreen(),
+            Center(
               child: Text('Settings'),
             ),
           ],
