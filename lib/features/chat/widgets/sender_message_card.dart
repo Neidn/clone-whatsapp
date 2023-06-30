@@ -27,6 +27,7 @@ class SenderMessageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final bool isReplying = repliedText.isNotEmpty;
 
     return SwipeTo(
       rightSwipeWidget: Container(
@@ -46,29 +47,47 @@ class SenderMessageCard extends StatelessWidget {
           ),
           child: Card(
             elevation: 1,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             color: senderMessageColor,
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: Stack(
               children: [
                 Padding(
-                  padding: type == MessageTypeEnum.text
-                      ? const EdgeInsets.only(
-                          left: 10,
-                          right: 20,
-                          top: 5,
-                          bottom: 20,
-                        )
-                      : const EdgeInsets.only(
-                          left: 5,
-                          right: 5,
-                          top: 5,
-                          bottom: 25,
+                  padding: const EdgeInsets.only(
+                    left: 5,
+                    right: 5,
+                    top: 5,
+                    bottom: 25,
+                  ),
+                  child: Column(
+                    children: [
+                      // Reply
+                      if (isReplying) ...[
+                        Container(
+                          height: size.height * 0.05,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: backgroundColor.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          // TODO: scale the image when replying
+                          child: DisplayTextImageGIF(
+                            type: repliedType,
+                            message: repliedText,
+                          ),
                         ),
-                  child: DisplayTextImageGIF(
-                    type: type,
-                    message: message,
-                    date: date,
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+                      ],
+
+                      // Message
+                      DisplayTextImageGIF(
+                        type: type,
+                        message: message,
+                      ),
+                    ],
                   ),
                 ),
                 Positioned(

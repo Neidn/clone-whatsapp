@@ -7,13 +7,11 @@ import 'package:flutter_sound/flutter_sound.dart';
 class DisplayTextImageGIF extends StatefulWidget {
   final MessageTypeEnum type;
   final String message;
-  final String date;
 
   const DisplayTextImageGIF({
     super.key,
     required this.type,
     required this.message,
-    this.date = '',
   });
 
   @override
@@ -132,12 +130,18 @@ class _DisplayTextImageGIFState extends State<DisplayTextImageGIF> {
   Widget _displayImage(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: widget.message,
+      placeholder: (context, url) => const CircularProgressIndicator(),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+      fit: BoxFit.cover,
     );
   }
 
   Widget _displayGIF(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: widget.message,
+      placeholder: (context, url) => const CircularProgressIndicator(),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+      fit: BoxFit.cover,
     );
   }
 

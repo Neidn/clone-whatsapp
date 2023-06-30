@@ -12,6 +12,7 @@ class MyMessageCard extends StatelessWidget {
   final String username;
   final MessageTypeEnum repliedType;
   final VoidCallback onRightSwipe;
+  final bool isSeen;
 
   const MyMessageCard({
     super.key,
@@ -22,6 +23,7 @@ class MyMessageCard extends StatelessWidget {
     required this.username,
     required this.repliedType,
     required this.onRightSwipe,
+    required this.isSeen,
   });
 
   @override
@@ -64,19 +66,22 @@ class MyMessageCard extends StatelessWidget {
                     top: 5,
                     bottom: 25,
                   ),
+                  // Message
                   child: Column(
                     children: [
                       // Reply
                       if (isReplying) ...[
                         Container(
+                          height: size.height * 0.05,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: backgroundColor.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(8),
                           ),
+                          // TODO: scale the image when replying
                           child: DisplayTextImageGIF(
-                            message: repliedText,
                             type: repliedType,
+                            message: repliedText,
                           ),
                         ),
                         SizedBox(
@@ -88,7 +93,6 @@ class MyMessageCard extends StatelessWidget {
                       DisplayTextImageGIF(
                         type: type,
                         message: message,
-                        date: date,
                       ),
                     ],
                   ),
@@ -108,10 +112,10 @@ class MyMessageCard extends StatelessWidget {
                       SizedBox(
                         width: size.width * 0.02,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.done_all,
                         size: 20,
-                        color: Colors.white60,
+                        color: isSeen ? Colors.blue : Colors.white60,
                       ),
                     ],
                   ),

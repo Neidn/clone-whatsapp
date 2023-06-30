@@ -87,6 +87,16 @@ class _ChatListState extends ConsumerState<ChatList> {
             final bool isMe =
                 (message.senderId == FirebaseAuth.instance.currentUser!.uid);
 
+            final bool isSeen = message.isSeen;
+
+            if (isMe && !isSeen) {
+              ref.read(chatControllerProvider).setChatMessageSeen(
+                    context: context,
+                    receiverUserId: widget.receiverUserId,
+                    messageId: message.messageId,
+                  );
+            }
+
             if (isMe) {
               return MyMessageCard(
                 message: message.text,
@@ -95,6 +105,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                 repliedText: message.repliedMessage,
                 username: message.repliedTo,
                 repliedType: message.repliedType,
+                isSeen: isSeen,
                 onRightSwipe: () => _onMessageSwipe(
                   message: message.text,
                   isMe: isMe,

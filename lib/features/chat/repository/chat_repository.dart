@@ -389,4 +389,46 @@ class ChatRepository {
       rethrow;
     }
   }
+
+  void setChatMessageSeen({
+    required BuildContext context,
+    required String receiverUserId,
+    required String messageId,
+  }) async {
+    try {
+      // set message seen to sender user message sub collection
+      await firestore
+          .collection(usersPath)
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection(chatsPath)
+          .doc(receiverUserId)
+          .collection(messagesPath)
+          .doc(messageId)
+          .update(
+        {
+          'isSeen': true,
+        },
+      );
+
+      // set message seen to receiver user message sub collection
+      await firestore
+          .collection(usersPath)
+          .doc(receiverUserId)
+          .collection(chatsPath)
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection(messagesPath)
+          .doc(messageId)
+          .update(
+        {
+          'isSeen': true,
+        },
+      );
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        content: e.toString(),
+      );
+      rethrow;
+    }
+  }
 }
