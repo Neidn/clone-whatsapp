@@ -8,6 +8,7 @@ import 'package:clone_whatsapp/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -37,6 +38,7 @@ class StatusRepository {
     required String profilePic,
     required String phoneNumber,
     required File statusImage,
+    required List<Contact> contacts,
   }) async {
     try {
       final String statusId = const Uuid().v1();
@@ -50,28 +52,10 @@ class StatusRepository {
             file: statusImage,
           );
 
-      // Get all contacts
-      List<Contact> contacts = [];
-      final bool permissionGranted = await FlutterContacts.requestPermission();
-      if (!permissionGranted) {
-        throw Exception('Permission not granted');
-      }
-
-      if (permissionGranted) {
-        contacts = await FlutterContacts.getContacts(
-          withProperties: true,
-          withThumbnail: true,
-        );
-      }
-
-      if (contacts.isEmpty) {
-        throw Exception('No contacts found');
-      }
-
       // Get all viewers
       final List<String> viewers = [];
 
-      for (var contact in contacts) {
+      for (Contact contact in contacts) {
         if (contact.phones.isEmpty) {
           continue;
         }
@@ -137,6 +121,47 @@ class StatusRepository {
         content: e.toString(),
       );
       return;
+    }
+  }
+
+  Future<List<Status>> getStatus({
+    required BuildContext context,
+    required List<Contact> contacts,
+  }) async {
+    try {
+      final List<Status> statusList = [];
+
+      for (Contact contact in contacts) {
+        var statusSnapshot = await firestore
+            .collection(statusPath)
+            .where(
+              'phoneNumber',
+              isEqualTo:
+                  contact.phones.first.number.replaceAll(RegExp('[- ]'), ''),
+            )
+            .where('uploadTime',
+                isGreaterThan: DateTime.now().subtract(
+                  const Duration(days: 1),
+                ))
+            .get();
+
+
+        for (var temp in statusSnapshot.docs) {
+          Status tempStatus = Status.fromMap(temp.data());
+          if (tempStatus.viewers.contains(firebaseAuth.currentUser!.uid)) {
+            statusList.add(tempStatus);
+          }
+        }
+      }
+
+      return statusList;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      showSnackBar(
+        context: context,
+        content: e.toString(),
+      );
+      return [];
     }
   }
 }

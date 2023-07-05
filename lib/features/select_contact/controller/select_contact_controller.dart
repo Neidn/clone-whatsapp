@@ -33,4 +33,8 @@ class SelectContactController {
       selectedContact: selectedContact,
     );
   }
+
+  Future<List<Contact>> getContacts() async {
+    return await selectContactRepository.getContacts();
+  }
 }

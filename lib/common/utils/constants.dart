@@ -1,19 +1,25 @@
 import 'package:clone_whatsapp/features/chat/screens/chat_screen.dart';
 import 'package:clone_whatsapp/features/status/screen/status_contacts_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // Pages
-const pages = [
-  StatusContactsScreen(),
-  Center(
+final pages = [
+  const StatusContactsScreen(),
+  const Center(
     child: Text('Calls'),
   ),
-  Center(
+  const Center(
     child: Text('Camera'),
   ),
-  ChatScreen(),
+  const ChatScreen(),
   Center(
-    child: Text('Settings'),
+    child: IconButton(
+      onPressed: () async {
+        await FirebaseAuth.instance.signOut();
+      },
+      icon: const Icon(Icons.logout),
+    ),
   ),
 ];
 
