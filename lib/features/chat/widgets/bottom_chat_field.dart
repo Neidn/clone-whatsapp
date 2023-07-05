@@ -233,7 +233,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     return Column(
       children: [
         // Message Reply
-        if (isShowMessageReply) MessageReplyPreview(),
+        if (isShowMessageReply) const MessageReplyPreview(),
 
         Container(
           color: bottomBackgroundColor,

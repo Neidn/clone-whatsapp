@@ -28,6 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
           style: TextStyle(
             fontSize: 16,
             color: primaryColor,
+            fontWeight: FontWeight.bold,
           ),
         ),
         actions: [

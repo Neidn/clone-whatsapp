@@ -1,10 +1,9 @@
+import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:clone_whatsapp/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/common/utils/colors.dart';
-
-import 'package:clone_whatsapp/features/chat/screens/chat_screen.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const String routeName = '/mobile-layout-screen';
@@ -18,7 +17,7 @@ class MobileLayoutScreen extends ConsumerStatefulWidget {
 class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
     with WidgetsBindingObserver {
   late final PageController _pageController;
-  int _currentIndex = 3;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -67,21 +66,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           onPageChanged: _onPageChanged,
-          children: const [
-            Center(
-              child: Text('Status'),
-            ),
-            Center(
-              child: Text('Calls'),
-            ),
-            Center(
-              child: Text('Camera'),
-            ),
-            ChatScreen(),
-            Center(
-              child: Text('Settings'),
-            ),
-          ],
+          children: pages,
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
