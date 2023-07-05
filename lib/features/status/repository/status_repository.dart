@@ -58,7 +58,10 @@ class StatusRepository {
       }
 
       if (permissionGranted) {
-        contacts = await FlutterContacts.getContacts();
+        contacts = await FlutterContacts.getContacts(
+          withProperties: true,
+          withThumbnail: true,
+        );
       }
 
       if (contacts.isEmpty) {

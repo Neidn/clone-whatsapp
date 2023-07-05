@@ -4,6 +4,7 @@ import 'package:clone_whatsapp/common/utils/colors.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
 import 'package:clone_whatsapp/features/status/screen/confirm_status_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StatusContactsScreen extends ConsumerWidget {
