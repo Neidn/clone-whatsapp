@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:clone_whatsapp/features/status/screen/confirm_status_screen.dart';
+import 'package:clone_whatsapp/features/status/screen/status_screen.dart';
+import 'package:clone_whatsapp/models/status_model.dart';
 import 'package:flutter/material.dart';
 
 import '/common/widgets/error.dart';
@@ -67,6 +69,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => ConfirmStatusScreen(
           file: file,
+        ),
+      );
+
+    case StatusScreen.routeName:
+      final status = settings.arguments as Status;
+
+      return MaterialPageRoute(
+        builder: (context) => StatusScreen(
+          status: status,
         ),
       );
 

@@ -6,8 +6,8 @@ import 'package:clone_whatsapp/common/utils/utils.dart';
 import 'package:clone_whatsapp/common/widgets/loader.dart';
 import 'package:clone_whatsapp/features/status/controller/status_controller.dart';
 import 'package:clone_whatsapp/features/status/screen/confirm_status_screen.dart';
+import 'package:clone_whatsapp/features/status/screen/status_screen.dart';
 import 'package:clone_whatsapp/models/status_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -65,7 +65,10 @@ class StatusContactsScreen extends ConsumerWidget {
               return Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () => Navigator.of(context).pushNamed(
+                      StatusScreen.routeName,
+                      arguments: status,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(
                         bottom: 8,
