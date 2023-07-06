@@ -32,12 +32,12 @@ class StatusContactsScreen extends ConsumerWidget {
       ),
       floatingActionButton: IconButton(
         onPressed: () => pickImageFromGallery(context: context).then(
-          (File? file) {
+          (File? file) async {
             if (file == null) {
               return;
             }
 
-            Navigator.of(context).pushNamed(
+            await Navigator.of(context).pushNamed(
               ConfirmStatusScreen.routeName,
               arguments: file,
             );
@@ -65,7 +65,7 @@ class StatusContactsScreen extends ConsumerWidget {
               return Column(
                 children: [
                   InkWell(
-                    onTap: () => Navigator.of(context).pushNamed(
+                    onTap: () async => await Navigator.of(context).pushNamed(
                       StatusScreen.routeName,
                       arguments: status,
                     ),

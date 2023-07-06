@@ -57,8 +57,8 @@ class AuthRepository {
         verificationFailed: (verificationFailed) {
           throw Exception(verificationFailed.message);
         },
-        codeSent: (verificationId, resendingToken) {
-          Navigator.of(context).pushNamed(
+        codeSent: (verificationId, resendingToken) async {
+          await Navigator.of(context).pushNamed(
             OTPScreen.routeName,
             arguments: verificationId,
           );
@@ -91,8 +91,8 @@ class AuthRepository {
         smsCode: userOTP,
       );
 
-      firebaseAuth.signInWithCredential(credential).then((value) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
+      firebaseAuth.signInWithCredential(credential).then((value) async {
+        await Navigator.of(context).pushNamedAndRemoveUntil(
           UserInformationScreen.routeName,
           (route) => false,
         );
@@ -147,8 +147,8 @@ class AuthRepository {
           .collection(usersPath)
           .doc(uid)
           .set(user.toMap())
-          .then((value) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
+          .then((value) async {
+        await Navigator.of(context).pushNamedAndRemoveUntil(
           MobileLayoutScreen.routeName,
           (route) => false,
         );

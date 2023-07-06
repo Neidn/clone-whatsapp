@@ -48,19 +48,20 @@ class _StatusScreenState extends State<StatusScreen> {
     return Scaffold(
       body: _storyItems.isEmpty
           ? const Loader()
-          : SafeArea(
-        child: StoryView(
-                storyItems: _storyItems,
-                controller: _storyController,
-                inline: false,
-                repeat: false,
-                onVerticalSwipeComplete: (direction) {
-                  if (direction == Direction.down) {
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-          ),
+          : StoryView(
+              storyItems: _storyItems,
+              controller: _storyController,
+              inline: false,
+              repeat: false,
+              onVerticalSwipeComplete: (direction) {
+                if (direction == Direction.down) {
+                  Navigator.of(context).pop();
+                }
+              },
+              onComplete: () {
+                Navigator.of(context).pop();
+              },
+            ),
     );
   }
 }

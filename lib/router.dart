@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:clone_whatsapp/features/community/screens/community_detail_screen.dart';
+import 'package:clone_whatsapp/features/community/screens/community_screen.dart';
+import 'package:clone_whatsapp/features/community/screens/create_community_screen.dart';
+import 'package:clone_whatsapp/features/community/screens/create_group_screen.dart';
 import 'package:clone_whatsapp/features/status/screen/confirm_status_screen.dart';
 import 'package:clone_whatsapp/features/status/screen/status_screen.dart';
 import 'package:clone_whatsapp/models/status_model.dart';
@@ -79,6 +83,26 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => StatusScreen(
           status: status,
         ),
+      );
+
+    case CommunityScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const CommunityScreen(),
+      );
+
+    case CreateGroupScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const CreateGroupScreen(),
+      );
+
+    case CreateCommunityScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const CreateCommunityScreen(),
+      );
+
+    case CommunityDetailScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const CommunityDetailScreen(),
       );
 
     default:

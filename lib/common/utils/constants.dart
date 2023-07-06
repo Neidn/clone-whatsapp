@@ -1,4 +1,5 @@
 import 'package:clone_whatsapp/features/chat/screens/chat_screen.dart';
+import 'package:clone_whatsapp/features/community/screens/community_screen.dart';
 import 'package:clone_whatsapp/features/status/screen/status_contacts_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,7 @@ final pages = [
   const Center(
     child: Text('Calls'),
   ),
-  const Center(
-    child: Text('Camera'),
-  ),
+  const CommunityScreen(),
   const ChatScreen(),
   Center(
     child: IconButton(
