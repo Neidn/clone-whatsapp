@@ -3,19 +3,28 @@ import 'dart:io';
 import 'package:clone_whatsapp/common/utils/colors.dart';
 import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
+import 'package:clone_whatsapp/features/community/controller/group_controller.dart';
+import 'package:clone_whatsapp/features/community/provider/select_contacts_group_provider.dart';
+import 'package:clone_whatsapp/features/community/widgets/select_contacts_group.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreateGroupScreen extends StatefulWidget {
+class CreateGroupScreen extends ConsumerStatefulWidget {
   static const String routeName = '/create-group';
 
   const CreateGroupScreen({super.key});
 
   @override
-  State<CreateGroupScreen> createState() => _CreateGroupScreenState();
+  ConsumerState<CreateGroupScreen> createState() => _CreateGroupScreenState();
 }
 
-class _CreateGroupScreenState extends State<CreateGroupScreen> {
+class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   late final TextEditingController _groupNameController;
+  final List<int> selectedContactsIndex = [];
+
+  bool _isLoading = false;
   File? _image;
 
   @override
@@ -33,6 +42,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   void _selectImage({
     required BuildContext context,
   }) async {
+    setState(() {
+      _isLoading = true;
+    });
     pickImageFromGallery(context: context).then((File? pickedImage) {
       if (pickedImage == null) {
         showSnackBar(
@@ -44,8 +56,68 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
       setState(() {
         _image = pickedImage;
+        _isLoading = false;
       });
     });
+  }
+
+  void _selectContact({
+    required int index,
+    required Contact contact,
+  }) async {
+    if (selectedContactsIndex.contains(index)) {
+      selectedContactsIndex.remove(index);
+    } else {
+      selectedContactsIndex.add(index);
+      ref.read(selectContactsGroupProvider.notifier).update(contact);
+    }
+    setState(() {});
+  }
+
+  void _removeContact({
+    required int index,
+    required Contact contact,
+  }) async {
+    if (selectedContactsIndex.contains(index)) {
+      selectedContactsIndex.remove(index);
+      ref.read(selectContactsGroupProvider.notifier).remove(contact);
+    } else {
+      selectedContactsIndex.add(index);
+    }
+    setState(() {});
+  }
+
+  void _createGroup() async {
+    final String groupName = _groupNameController.text.trim();
+
+    if (groupName.isEmpty) {
+      showSnackBar(
+        context: context,
+        content: 'Please enter group name',
+      );
+      return;
+    }
+
+    getImageFileFromAssets(defaultImage).then((value) {
+      setState(() {
+        _image = value;
+      });
+    }).then((value) {
+      ref.read(groupControllerProvider).createGroup(
+            context: context,
+            groupName: groupName,
+            profilePic: _image!,
+            selectedContacts: ref
+                .read(selectContactsGroupProvider.notifier)
+                .getSelectedContacts(),
+          );
+    });
+  }
+
+  bool _checkIndexExists({
+    required int index,
+  }) {
+    return selectedContactsIndex.contains(index);
   }
 
   @override
@@ -68,11 +140,33 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             ),
           ),
         ),
+        actions: [
+          InkWell(
+            onTap: () {
+              if (selectedContactsIndex.isEmpty) return;
+              _createGroup();
+            },
+            child: Center(
+              child: Text(
+                '다음',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: selectedContactsIndex.isEmpty
+                      ? Colors.grey
+                      : primaryColor,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            _isLoading
+                ? const LinearProgressIndicator()
+                : const Padding(padding: EdgeInsets.only(top: 0)),
             const SizedBox(height: 20),
             // Community Profile picture
             Stack(
@@ -129,6 +223,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             // Select Contacts
             Container(
               alignment: Alignment.topLeft,
+              padding: const EdgeInsets.all(8),
               child: const Text(
                 'Select Contacts',
                 style: TextStyle(
@@ -136,6 +231,11 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+            ),
+            SelectContactsGroup(
+              onSelected: _selectContact,
+              onRemoved: _removeContact,
+              onIndexExisted: _checkIndexExists,
             ),
           ],
         ),

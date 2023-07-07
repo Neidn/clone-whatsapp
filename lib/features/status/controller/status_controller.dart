@@ -5,7 +5,7 @@ import 'package:clone_whatsapp/features/select_contact/controller/select_contact
 import 'package:clone_whatsapp/features/status/repository/status_repository.dart';
 import 'package:clone_whatsapp/models/status_model.dart';
 import 'package:clone_whatsapp/models/user_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

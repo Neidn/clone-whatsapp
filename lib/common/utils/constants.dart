@@ -37,6 +37,8 @@ const String usersPath = 'users';
 const String chatsPath = 'chats';
 const String messagesPath = 'messages';
 const String statusPath = 'status';
+const String communityPath = 'community';
+const String groupsPath = 'groups';
 
 // firebase storage path
 const String profilePicturePath = 'profilePictures';

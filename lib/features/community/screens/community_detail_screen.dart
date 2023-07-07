@@ -1,6 +1,8 @@
 import 'package:clone_whatsapp/common/utils/colors.dart';
+import 'package:clone_whatsapp/features/community/screens/group_management_screen.dart';
 import 'package:clone_whatsapp/features/community/widgets/community_common_icon.dart';
 import 'package:clone_whatsapp/features/community/widgets/community_wrapper_widget.dart';
+import 'package:clone_whatsapp/features/community/widgets/group_card.dart';
 import 'package:flutter/material.dart';
 
 class CommunityDetailScreen extends StatelessWidget {
@@ -15,6 +17,7 @@ class CommunityDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('커뮤니티'),
+        elevation: 0,
         centerTitle: true,
         leading: InkWell(
           onTap: () => Navigator.of(context).pop(),
@@ -70,7 +73,7 @@ class CommunityDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Text(
+            const Text(
               '커뮤니티 이름',
               style: TextStyle(
                 fontSize: 20,
@@ -78,7 +81,7 @@ class CommunityDetailScreen extends StatelessWidget {
               ),
             ),
             RichText(
-              text: TextSpan(
+              text: const TextSpan(
                 children: [
                   TextSpan(
                     text: '커뮤니티',
@@ -106,7 +109,8 @@ class CommunityDetailScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: size.width * 0.3,
-                    child: CommunityWrapperWidget(
+                    child: const CommunityWrapperWidget(
+                      vertical: 8,
                       child: Column(
                         children: [
                           Icon(
@@ -126,7 +130,8 @@ class CommunityDetailScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     width: size.width * 0.3,
-                    child: CommunityWrapperWidget(
+                    child: const CommunityWrapperWidget(
+                      vertical: 8,
                       child: Column(
                         children: [
                           Icon(
@@ -144,23 +149,29 @@ class CommunityDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: size.width * 0.3,
-                    child: CommunityWrapperWidget(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.people,
-                            color: Colors.blueAccent,
-                          ),
-                          Text(
-                            '그룹 추가',
-                            style: TextStyle(
+                  InkWell(
+                    onTap: () async => await Navigator.of(context).pushNamed(
+                      GroupManagementScreen.routeName,
+                    ),
+                    child: SizedBox(
+                      width: size.width * 0.3,
+                      child: const CommunityWrapperWidget(
+                        vertical: 8,
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.people,
                               color: Colors.blueAccent,
-                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ],
+                            Text(
+                              '그룹 추가',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -168,10 +179,15 @@ class CommunityDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: CommunityWrapperWidget(
-                child: Text('test'),
+                child: Text(
+                  '커뮤니티 설명',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -180,30 +196,35 @@ class CommunityDetailScreen extends StatelessWidget {
               child: CommunityWrapperWidget(
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '그룹 관리',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                    InkWell(
+                      onTap: () async => await Navigator.of(context).pushNamed(
+                        GroupManagementScreen.routeName,
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '그룹 관리',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '1개',
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 16,
-                            ),
-                          ],
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              Text(
+                                '1개',
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     const Divider(),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -219,7 +240,7 @@ class CommunityDetailScreen extends StatelessWidget {
                       ],
                     ),
                     const Divider(),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -240,7 +261,7 @@ class CommunityDetailScreen extends StatelessWidget {
             ),
             // MyGroup
             const SizedBox(height: 24),
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: Text(
                 '내 그룹',
@@ -251,35 +272,36 @@ class CommunityDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: CommunityWrapperWidget(
+                vertical: 8,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        const CommunityCommonIcon(
+                        CommunityCommonIcon(
                           icon: Icons.campaign,
                           iconColor: Colors.blueAccent,
                           // #003458
                           backgroundColor: Color.fromRGBO(0, 52, 88, 1),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 16),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               '공지사항',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               '마지막 메세지',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 color: greyColor,
                               ),
@@ -310,7 +332,7 @@ class CommunityDetailScreen extends StatelessWidget {
 
             // Other Group
             const SizedBox(height: 24),
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: Text(
                 '다른 그룹',
@@ -321,40 +343,24 @@ class CommunityDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: CommunityWrapperWidget(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[800],
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.people,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Text(
-                      '그룹 추가',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ],
+            InkWell(
+              onTap: () async => await Navigator.of(context).pushNamed(
+                GroupManagementScreen.routeName,
+              ),
+              child: const SizedBox(
+                width: double.infinity,
+                child: CommunityWrapperWidget(
+                  vertical: 8,
+                  child: GroupCard(
+                    icon: Icons.people,
+                    title: '그룹 추가',
+                  ),
                 ),
               ),
             ),
 
             const SizedBox(height: 16),
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: CommunityWrapperWidget(
                 child: Column(
@@ -367,7 +373,7 @@ class CommunityDetailScreen extends StatelessWidget {
                         color: Colors.redAccent,
                       ),
                     ),
-                    const Divider(),
+                    Divider(),
                     Text(
                       '커뮤니티 신고',
                       style: TextStyle(
@@ -375,7 +381,7 @@ class CommunityDetailScreen extends StatelessWidget {
                         color: Colors.redAccent,
                       ),
                     ),
-                    const Divider(),
+                    Divider(),
                     Text(
                       '커뮤니티 비활성화',
                       style: TextStyle(

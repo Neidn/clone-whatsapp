@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/common/providers/message_reply_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/models/user_model.dart';

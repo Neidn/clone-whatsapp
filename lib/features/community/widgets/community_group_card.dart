@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 class CommunityGroupCard extends StatelessWidget {
   final String communityName;
   final String groupTitle;
-  final String lastMessage;
+  final String? lastMessage;
 
   const CommunityGroupCard({
     super.key,
     required this.communityName,
     required this.groupTitle,
-    required this.lastMessage,
+    this.lastMessage,
   });
 
   @override
@@ -73,13 +73,14 @@ class CommunityGroupCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    lastMessage,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: greyColor,
+                  if (lastMessage != null && lastMessage!.isNotEmpty)
+                    Text(
+                      lastMessage!,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: greyColor,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ],

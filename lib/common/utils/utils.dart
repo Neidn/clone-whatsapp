@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 void showSnackBar({
   required BuildContext context,
@@ -117,4 +119,14 @@ Future<GiphyGif?> pickGIF({
     );
     return null;
   }
+}
+
+Future<File> getImageFileFromAssets(String path) async {
+  final byteData = await rootBundle.load(path);
+
+  final file = File('${(await getTemporaryDirectory()).path}/$path');
+  await file.create(recursive: true);
+  await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+  return file;
 }
