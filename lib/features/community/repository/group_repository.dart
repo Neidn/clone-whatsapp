@@ -30,9 +30,11 @@ class GroupRepository {
 
   void createGroup({
     required BuildContext context,
+    required String communityId,
     required String groupName,
     required File profilePic,
     required List<Contact> selectedContacts,
+    bool isNotice = false,
   }) async {
     try {
       List<String> uidList = [];
@@ -71,10 +73,30 @@ class GroupRepository {
         members: [...uidList, firebaseAuth.currentUser!.uid],
       );
 
-      await firebaseFirestore
-          .collection(groupsPath)
-          .doc(groupId)
-          .set(group.toMap());
+      if (isNotice) {
+        await firebaseFirestore
+            .collection(communityPath)
+            .doc(communityId)
+            .collection(noticePath)
+            .doc(groupId)
+            .set(group.toMap());
+      } else {
+        await firebaseFirestore
+            .collection(communityPath)
+            .doc(communityId)
+            .collection(groupsPath)
+            .doc(groupId)
+            .set(group.toMap());
+
+        await firebaseFirestore
+            .collection(communityPath)
+            .doc(communityId)
+            .update(
+          {
+            'groups': FieldValue.arrayUnion([groupId])
+          },
+        );
+      }
     } catch (e) {
       showSnackBar(
         context: context,

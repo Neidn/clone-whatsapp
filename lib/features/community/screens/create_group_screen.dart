@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:clone_whatsapp/common/utils/colors.dart';
 import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
+import 'package:clone_whatsapp/features/auth/controller/auth_controller.dart';
 import 'package:clone_whatsapp/features/community/controller/group_controller.dart';
 import 'package:clone_whatsapp/features/community/provider/select_contacts_group_provider.dart';
 import 'package:clone_whatsapp/features/community/widgets/select_contacts_group.dart';
+import 'package:clone_whatsapp/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,6 +31,20 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   @override
   void initState() {
     _groupNameController = TextEditingController();
+    // Update FirebaseAuth user
+    ref.read(authControllerProvider).getUserData().then((UserModel? user) {
+      if (user == null) {
+        return;
+      }
+      ref.read(selectContactsGroupProvider.notifier).update(
+            Contact(
+              displayName: user.name,
+              phones: [
+                Phone(user.phoneNumber),
+              ],
+            ),
+          );
+    });
     super.initState();
   }
 
@@ -102,15 +117,20 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
       setState(() {
         _image = value;
       });
-    }).then((value) {
+    }).then((_) {
       ref.read(groupControllerProvider).createGroup(
             context: context,
+            communityId: 'test',
             groupName: groupName,
             profilePic: _image!,
             selectedContacts: ref
                 .read(selectContactsGroupProvider.notifier)
                 .getSelectedContacts(),
           );
+    }).then((_) {
+      ref.read(selectContactsGroupProvider.notifier).reset();
+    }).then((_) {
+      Navigator.of(context).pop();
     });
   }
 

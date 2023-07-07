@@ -21,14 +21,19 @@ class GroupController {
 
   void createGroup({
     required BuildContext context,
+    required String communityId,
     required String groupName,
     required File profilePic,
     required List<Contact> selectedContacts,
-  }) =>
-      groupRepository.createGroup(
-        context: context,
-        groupName: groupName,
-        profilePic: profilePic,
-        selectedContacts: selectedContacts,
-      );
+    bool isNotice = false,
+  }) {
+    groupRepository.createGroup(
+      context: context,
+      communityId: communityId,
+      groupName: groupName,
+      profilePic: profilePic,
+      selectedContacts: selectedContacts,
+      isNotice: isNotice,
+    );
+  }
 }

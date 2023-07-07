@@ -19,6 +19,10 @@ class SelectContactsGroupProvider extends StateNotifier<List<Contact>> {
     state = state.where((element) => element != contact).toList();
   }
 
+  reset() {
+    state = [];
+  }
+
   getSelectedContacts() {
     return state;
   }
