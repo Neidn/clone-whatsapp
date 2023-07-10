@@ -93,6 +93,8 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
             profilePic: _image!,
             communityDescription: _communityDescriptionController.text.trim(),
           );
+    }).then((_) {
+      Navigator.of(context).pop();
     });
   }
 

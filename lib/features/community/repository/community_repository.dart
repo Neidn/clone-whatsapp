@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:clone_whatsapp/common/repositories/common_firebase_storage_repository.dart';
 import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
-import 'package:clone_whatsapp/features/auth/controller/auth_controller.dart';
 import 'package:clone_whatsapp/features/community/controller/group_controller.dart';
 import 'package:clone_whatsapp/models/community.dart';
-import 'package:clone_whatsapp/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,6 +27,34 @@ class CommunityRepository {
     required this.firebaseAuth,
     required this.ref,
   });
+
+  Stream<List<Community>> getCurrentCommunityData() {
+    return firebaseFirestore
+        .collection(communityPath)
+        .where('members', arrayContains: firebaseAuth.currentUser!.uid)
+        .snapshots()
+        .asyncMap((event) async {
+      final List<Community> communities = [];
+
+      for (final DocumentSnapshot community in event.docs) {
+        communities.add(
+          Community.fromMap(community.data() as Map<String, dynamic>),
+        );
+      }
+
+      return communities;
+    });
+  }
+
+  Stream<Community> getCommunity({required String communityId}) {
+    return firebaseFirestore
+        .collection(communityPath)
+        .doc(communityId)
+        .snapshots()
+        .asyncMap((event) async {
+      return Community.fromMap(event.data() as Map<String, dynamic>);
+    });
+  }
 
   void createCommunity({
     required BuildContext context,
@@ -53,8 +78,10 @@ class CommunityRepository {
         name: communityName,
         communityId: communityId,
         communityPic: communityPic,
+        description: communityDescription,
         groups: [],
-        lastMessage: '',
+        members: [firebaseAuth.currentUser!.uid],
+        lastMessage: communityLastMessage,
         lastMessageTime: DateTime.now(),
       );
 
@@ -72,6 +99,7 @@ class CommunityRepository {
               profilePic: profilePic,
               selectedContacts: [],
               isNotice: true,
+              lastMessage: communityLastMessage,
             );
       });
     } catch (e) {

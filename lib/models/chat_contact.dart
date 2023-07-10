@@ -4,7 +4,7 @@ class ChatContact {
   final String contactId;
   final DateTime sendTime;
   final String lastMessage;
-  final String otherName;
+  final String? otherName;
 
   ChatContact({
     required this.name,

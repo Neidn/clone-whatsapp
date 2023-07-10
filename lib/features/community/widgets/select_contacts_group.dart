@@ -1,7 +1,8 @@
 import 'package:clone_whatsapp/common/utils/colors.dart';
-import 'package:clone_whatsapp/common/widgets/error.dart';
-import 'package:clone_whatsapp/common/widgets/loader.dart';
+import 'package:clone_whatsapp/widgets/error.dart';
 import 'package:clone_whatsapp/features/select_contact/controller/select_contact_controller.dart';
+import 'package:clone_whatsapp/widgets/loader.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +23,15 @@ class SelectContactsGroup extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getContactsProvider).when(
           data: (List<Contact> contacts) {
+            // duplicate the current user
+            final int index = contacts.indexWhere((element) =>
+                element.phones.first.number.replaceAll(RegExp('[- ]'), '') ==
+                FirebaseAuth.instance.currentUser!.phoneNumber);
+
+            if (index > -1) {
+              contacts.removeAt(index);
+            }
+
             return Expanded(
               child: ListView.builder(
                 itemCount: contacts.length,
@@ -54,7 +64,7 @@ class SelectContactsGroup extends ConsumerWidget {
                       ),
                       child: ListTile(
                         title: Text(
-                          contact.displayName ?? '',
+                          contact.displayName,
                           style: const TextStyle(fontSize: 18),
                         ),
                         trailing: onIndexExisted(index: index)

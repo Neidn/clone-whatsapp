@@ -5,6 +5,7 @@ import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:clone_whatsapp/models/group.dart' as model;
 
 import '/models/user_model.dart';
 import '/models/chat_contact.dart';
@@ -31,6 +32,8 @@ class ChatController {
 
   Stream<List<ChatContact>> chatContacts() => chatRepository.getChatContacts();
 
+  Stream<List<model.Group>> chatGroups() => chatRepository.getChatGroups();
+
   Stream<List<Message>> messages({
     required String receiverUserId,
   }) =>
@@ -38,10 +41,21 @@ class ChatController {
         receiverUserId: receiverUserId,
       );
 
+  Stream<List<Message>> groupMessages({
+    required String communityId,
+    required String groupId,
+  }) =>
+      chatRepository.getGroupChats(
+        communityId: communityId,
+        groupId: groupId,
+      );
+
   void sendTextMessage({
     required BuildContext context,
     required String text,
     required String receiverUserId,
+    required bool isGroupChat,
+    required String groupId,
   }) async {
     ref.read(userDataAuthProvider).whenData(
           (UserModel? userModel) => chatRepository.sendTextMessage(
@@ -50,6 +64,8 @@ class ChatController {
             receiverUserId: receiverUserId,
             senderUserModel: userModel!,
             messageReply: ref.read(messageReplyProvider),
+            isGroupChat: isGroupChat,
+            groupId: groupId,
           ),
         );
 
@@ -61,6 +77,8 @@ class ChatController {
     required File file,
     required String receiverUserId,
     required MessageTypeEnum messageType,
+    required bool isGroupChat,
+    required String groupId,
   }) async {
     ref.read(userDataAuthProvider).whenData(
           (UserModel? senderUserModel) => chatRepository.sendFileMessage(
@@ -71,6 +89,8 @@ class ChatController {
             ref: ref,
             messageType: messageType,
             messageReply: ref.read(messageReplyProvider),
+            isGroupChat: isGroupChat,
+            groupId: groupId,
           ),
         );
     ref.read(messageReplyProvider.notifier).update(null);
@@ -80,6 +100,8 @@ class ChatController {
     required BuildContext context,
     required String gifUrl,
     required String receiverUserId,
+    required bool isGroupChat,
+    required String groupId,
   }) async {
     // gifUrl = https://giphy.com/embed/dK0somWWBmQEyvZSrI
     // realGifUrl = https://media.giphy.com/media/dK0somWWBmQEyvZSrI/giphy.webp
@@ -99,6 +121,8 @@ class ChatController {
             receiverUserId: receiverUserId,
             senderUserModel: senderUserModel!,
             messageReply: ref.read(messageReplyProvider),
+            isGroupChat: isGroupChat,
+            groupId: groupId,
           ),
         );
 
@@ -109,10 +133,14 @@ class ChatController {
     required BuildContext context,
     required String receiverUserId,
     required String messageId,
+    required bool isGroupChat,
+    required String groupId,
   }) =>
       chatRepository.setChatMessageSeen(
         context: context,
         receiverUserId: receiverUserId,
         messageId: messageId,
+        isGroupChat: isGroupChat,
+        groupId: groupId,
       );
 }

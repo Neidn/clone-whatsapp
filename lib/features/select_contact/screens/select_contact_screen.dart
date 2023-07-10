@@ -1,11 +1,10 @@
+import 'package:clone_whatsapp/common/utils/constants.dart';
+import 'package:clone_whatsapp/widgets/error.dart';
+import 'package:clone_whatsapp/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '/common/utils/constants.dart';
-
-import '/common/widgets/error.dart';
-import '/common/widgets/loader.dart';
 
 import '/features/select_contact/controller/select_contact_controller.dart';
 

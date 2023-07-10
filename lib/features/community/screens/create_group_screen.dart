@@ -15,7 +15,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CreateGroupScreen extends ConsumerStatefulWidget {
   static const String routeName = '/create-group';
 
-  const CreateGroupScreen({super.key});
+  final String communityId;
+
+  const CreateGroupScreen({
+    super.key,
+    required this.communityId,
+  });
 
   @override
   ConsumerState<CreateGroupScreen> createState() => _CreateGroupScreenState();
@@ -102,7 +107,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     setState(() {});
   }
 
-  void _createGroup() async {
+  void _createGroup({
+    required BuildContext context,
+    required String communityId,
+  }) async {
     final String groupName = _groupNameController.text.trim();
 
     if (groupName.isEmpty) {
@@ -120,7 +128,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     }).then((_) {
       ref.read(groupControllerProvider).createGroup(
             context: context,
-            communityId: 'test',
+            communityId: communityId,
             groupName: groupName,
             profilePic: _image!,
             selectedContacts: ref
@@ -164,7 +172,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           InkWell(
             onTap: () {
               if (selectedContactsIndex.isEmpty) return;
-              _createGroup();
+              _createGroup(
+                communityId: widget.communityId,
+                context: context,
+              );
             },
             child: Center(
               child: Text(

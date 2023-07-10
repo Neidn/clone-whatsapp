@@ -1,6 +1,7 @@
 import 'package:clone_whatsapp/common/enums/message_enum.dart';
 import 'package:clone_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:clone_whatsapp/models/message_reply.dart';
+import 'package:clone_whatsapp/widgets/loader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -8,17 +9,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:clone_whatsapp/features/chat/widgets/sender_message_card.dart';
-import 'package:clone_whatsapp/common/widgets/loader.dart';
+
 import 'package:clone_whatsapp/features/chat/widgets/my_message_card.dart';
 import 'package:clone_whatsapp/models/message.dart';
 import '/features/chat/controller/chat_controller.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
+  final bool isGroupChat;
+  final String groupId;
 
   const ChatList({
     super.key,
     required this.receiverUserId,
+    required this.isGroupChat,
+    required this.groupId,
   });
 
   @override
@@ -56,9 +61,14 @@ class _ChatListState extends ConsumerState<ChatList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Message>>(
-      stream: ref.read(chatControllerProvider).messages(
-            receiverUserId: widget.receiverUserId,
-          ),
+      stream: widget.isGroupChat
+          ? ref.read(chatControllerProvider).groupMessages(
+                communityId: widget.receiverUserId,
+                groupId: widget.groupId,
+              )
+          : ref.read(chatControllerProvider).messages(
+                receiverUserId: widget.receiverUserId,
+              ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Loader();
@@ -94,6 +104,8 @@ class _ChatListState extends ConsumerState<ChatList> {
                     context: context,
                     receiverUserId: widget.receiverUserId,
                     messageId: message.messageId,
+                    isGroupChat: widget.isGroupChat,
+                    groupId: widget.groupId,
                   );
             }
 

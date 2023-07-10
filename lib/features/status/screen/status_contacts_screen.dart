@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_whatsapp/common/utils/colors.dart';
 import 'package:clone_whatsapp/common/utils/utils.dart';
-import 'package:clone_whatsapp/common/widgets/loader.dart';
 import 'package:clone_whatsapp/features/status/controller/status_controller.dart';
 import 'package:clone_whatsapp/features/status/screen/confirm_status_screen.dart';
 import 'package:clone_whatsapp/features/status/screen/status_screen.dart';
 import 'package:clone_whatsapp/models/status_model.dart';
+import 'package:clone_whatsapp/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

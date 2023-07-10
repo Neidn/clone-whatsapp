@@ -53,6 +53,7 @@ app.*.map.json
 /lib/generated_plugin_registrant.dart
 /lib/firebase_options.dart
 /lib/config.*
+/lib/config/*
 /.env
 
 # Ios Pods

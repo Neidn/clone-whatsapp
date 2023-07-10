@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/common/utils/utils.dart';
 import '/common/utils/colors.dart';
 
-import '/common/widgets/custom_button.dart';
+import '../../../widgets/custom_button.dart';
 
 import '/features/auth/controller/auth_controller.dart';
 

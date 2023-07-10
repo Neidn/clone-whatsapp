@@ -32,6 +32,9 @@ Map<String, int> chatLines = {
   "max": 5,
 };
 
+const Size smallImageIconSize = Size(40, 40);
+const Size largeImageIconSize = Size(100, 100);
+
 // firestore path
 const String usersPath = 'users';
 const String chatsPath = 'chats';
@@ -50,4 +53,5 @@ const String soundTempFile = '_temp_sound.aac';
 const String communityDescriptionHint = '어떤 커뮤니티인지 설명햊쉐요. 멤버 규칙을 추가하는 것이 좋습니다.';
 const String communityDefaultDescription =
     '안녕하세요! 이 커뮤니티는 멤버들이 주제 기반 그룹에서 대화하고 중요한 공지사항을 확인할 수 있는 커뮤니티 입니다.';
+const String communityLastMessage = '커뮤니티에 오신 것을 환영합니다!';
 const String defaultNoticeGroup = '공지사항';

@@ -28,6 +28,32 @@ class GroupRepository {
     required this.ref,
   });
 
+  Stream<model.Group> getCommunityNotice({
+    required String communityId,
+  }) {
+    return firebaseFirestore
+        .collection(communityPath)
+        .doc(communityId)
+        .collection(noticePath)
+        .snapshots()
+        .asyncMap((event) {
+      return model.Group.fromMap(event.docs.first.data());
+    });
+  }
+
+  Stream<List<model.Group>> getGroups({
+    required String communityId,
+  }) {
+    return firebaseFirestore
+        .collection(communityPath)
+        .doc(communityId)
+        .collection(groupsPath)
+        .snapshots()
+        .asyncMap((event) {
+      return event.docs.map((e) => model.Group.fromMap(e.data())).toList();
+    });
+  }
+
   void createGroup({
     required BuildContext context,
     required String communityId,
@@ -35,6 +61,7 @@ class GroupRepository {
     required File profilePic,
     required List<Contact> selectedContacts,
     bool isNotice = false,
+    String? lastMessage,
   }) async {
     try {
       List<String> uidList = [];
@@ -64,13 +91,18 @@ class GroupRepository {
             file: profilePic,
           );
 
+      List<String> members = [...uidList, firebaseAuth.currentUser!.uid];
+      members = members.toSet().toList();
+
       final model.Group group = model.Group(
         senderId: firebaseAuth.currentUser!.uid,
+        communityId: communityId,
         name: groupName,
         groupId: groupId,
-        lastMessage: '',
+        lastMessage: lastMessage ?? '',
+        lastMessageTime: DateTime.now(),
         groupPic: groupPic,
-        members: [...uidList, firebaseAuth.currentUser!.uid],
+        members: members,
       );
 
       if (isNotice) {
@@ -93,7 +125,8 @@ class GroupRepository {
             .doc(communityId)
             .update(
           {
-            'groups': FieldValue.arrayUnion([groupId])
+            'groups': FieldValue.arrayUnion([groupId]),
+            'members': FieldValue.arrayUnion(uidList),
           },
         );
       }

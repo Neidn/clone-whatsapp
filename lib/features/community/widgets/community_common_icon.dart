@@ -1,4 +1,6 @@
 import 'package:clone_whatsapp/common/utils/colors.dart';
+import 'package:clone_whatsapp/common/utils/constants.dart';
+import 'package:clone_whatsapp/common/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class CommunityCommonIcon extends StatelessWidget {
@@ -23,8 +25,8 @@ class CommunityCommonIcon extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: smallImageIconSize.width,
+          height: smallImageIconSize.height,
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(8),

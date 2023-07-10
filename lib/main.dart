@@ -1,22 +1,18 @@
+import 'package:clone_whatsapp/common/utils/colors.dart';
+import 'package:clone_whatsapp/features/auth/controller/auth_controller.dart';
+import 'package:clone_whatsapp/features/landing/screens/landing_screen.dart';
+import 'package:clone_whatsapp/models/user_model.dart';
+import 'package:clone_whatsapp/router.dart';
+import 'package:clone_whatsapp/screens/mobile_layout_screen.dart';
+import 'package:clone_whatsapp/widgets/error.dart';
+import 'package:clone_whatsapp/widgets/loader.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '/router.dart';
-
-import '/common/utils/colors.dart';
-
 import 'package:clone_whatsapp/common/utils/constants.dart';
-import '/common/widgets/error.dart';
-import '/common/widgets/loader.dart';
-
-import '/models/user_model.dart';
-
-import 'screens/mobile_layout_screen.dart';
-import '/features/landing/screens/landing_screen.dart';
-import '/features/auth/controller/auth_controller.dart';
 
 import '/firebase_options.dart';
 
@@ -49,7 +45,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Clone WhatsApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,

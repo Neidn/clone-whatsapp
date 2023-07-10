@@ -10,7 +10,7 @@ import 'package:clone_whatsapp/features/status/screen/status_screen.dart';
 import 'package:clone_whatsapp/models/status_model.dart';
 import 'package:flutter/material.dart';
 
-import '/common/widgets/error.dart';
+import 'widgets/error.dart';
 
 import '/screens/mobile_layout_screen.dart';
 import '/screens/mobile_chat_screen.dart';
@@ -60,6 +60,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => MobileChatScreen(
           name: arguments['name'],
           uid: arguments['uid'],
+          isGroupChat: arguments['isGroupChat'],
+          groupId: arguments['groupId'],
         ),
       );
 
@@ -92,13 +94,21 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
 
     case CreateGroupScreen.routeName:
+      final String communityId = settings.arguments as String;
+
       return MaterialPageRoute(
-        builder: (context) => const CreateGroupScreen(),
+        builder: (context) => CreateGroupScreen(
+          communityId: communityId,
+        ),
       );
 
     case GroupManagementScreen.routeName:
+      final String communityId = settings.arguments as String;
+
       return MaterialPageRoute(
-        builder: (context) => const GroupManagementScreen(),
+        builder: (context) => GroupManagementScreen(
+          communityId: communityId,
+        ),
       );
 
     case CreateCommunityScreen.routeName:
@@ -107,8 +117,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
 
     case CommunityDetailScreen.routeName:
+      final communityId = settings.arguments as String;
+
       return MaterialPageRoute(
-        builder: (context) => const CommunityDetailScreen(),
+        builder: (context) => CommunityDetailScreen(
+          communityId: communityId,
+        ),
       );
 
     default:

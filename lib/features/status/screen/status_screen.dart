@@ -1,5 +1,5 @@
-import 'package:clone_whatsapp/common/widgets/loader.dart';
 import 'package:clone_whatsapp/models/status_model.dart';
+import 'package:clone_whatsapp/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:story_view/story_view.dart';
 

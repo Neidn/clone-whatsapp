@@ -5,12 +5,15 @@ import 'package:clone_whatsapp/features/community/widgets/community_wrapper_widg
 import 'package:flutter/material.dart';
 
 class CommunityGroupCard extends StatelessWidget {
+  final String communityId;
+  
   final String communityName;
   final String groupTitle;
   final String? lastMessage;
 
   const CommunityGroupCard({
     super.key,
+    required this.communityId,
     required this.communityName,
     required this.groupTitle,
     this.lastMessage,
@@ -26,6 +29,7 @@ class CommunityGroupCard extends StatelessWidget {
             onTap: () async {
               await Navigator.of(context).pushNamed(
                 CommunityDetailScreen.routeName,
+                arguments: communityId,
               );
             },
             child: Row(
@@ -90,6 +94,7 @@ class CommunityGroupCard extends StatelessWidget {
             onTap: () async {
               await Navigator.of(context).pushNamed(
                 CommunityDetailScreen.routeName,
+                arguments: communityId,
               );
             },
             child: const Row(

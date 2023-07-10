@@ -17,7 +17,7 @@ class MobileLayoutScreen extends ConsumerStatefulWidget {
 class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
     with WidgetsBindingObserver {
   late final PageController _pageController;
-  int _currentIndex = 2;
+  int _currentIndex = 3;
 
   @override
   void initState() {

@@ -25,6 +25,7 @@ class GroupController {
     required String groupName,
     required File profilePic,
     required List<Contact> selectedContacts,
+    String? lastMessage,
     bool isNotice = false,
   }) {
     groupRepository.createGroup(
@@ -34,6 +35,7 @@ class GroupController {
       profilePic: profilePic,
       selectedContacts: selectedContacts,
       isNotice: isNotice,
+      lastMessage: lastMessage,
     );
   }
 }

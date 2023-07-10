@@ -3,7 +3,9 @@ class Community {
   final String name;
   final String communityId;
   final String communityPic;
+  final String description;
   final List<String> groups;
+  final List<String> members;
   final String lastMessage;
   final DateTime lastMessageTime;
 
@@ -12,7 +14,9 @@ class Community {
     required this.name,
     required this.communityId,
     required this.communityPic,
+    required this.description,
     required this.groups,
+    required this.members,
     required this.lastMessage,
     required this.lastMessageTime,
   });
@@ -22,7 +26,9 @@ class Community {
         name: map['name'] ?? '',
         communityId: map['communityId'] ?? '',
         communityPic: map['communityPic'] ?? '',
+        description: map['description'] ?? '',
         groups: List<String>.from(map['groups'] ?? []),
+        members: List<String>.from(map['members'] ?? []),
         lastMessage: map['lastMessage'] ?? '',
         lastMessageTime: map['lastMessageTime']?.toDate() ?? DateTime.now(),
       );
@@ -32,7 +38,9 @@ class Community {
         'name': name,
         'communityId': communityId,
         'communityPic': communityPic,
+        'description': description,
         'groups': groups,
+        'members': members,
         'lastMessage': lastMessage,
         'lastMessageTime': lastMessageTime,
       };
