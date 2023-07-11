@@ -43,6 +43,7 @@ const String statusPath = 'status';
 const String communityPath = 'community';
 const String groupsPath = 'groups';
 const String noticePath = 'notice';
+const String callPath = 'call';
 
 // firebase storage path
 const String profilePicturePath = 'profilePictures';

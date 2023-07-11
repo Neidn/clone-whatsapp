@@ -131,6 +131,7 @@ class GroupManagementScreen extends ConsumerWidget {
                                   'uid': communityId,
                                   'isGroupChat': true,
                                   'groupId': noticeGroup.groupId,
+                                  'profilePic': noticeGroup.groupPic,
                                 },
                               );
                             },
@@ -203,6 +204,7 @@ class GroupManagementScreen extends ConsumerWidget {
                                           'uid': communityId,
                                           'isGroupChat': true,
                                           'groupId': group.groupId,
+                                          'profilePic': group.groupPic,
                                         },
                                       );
                                     },

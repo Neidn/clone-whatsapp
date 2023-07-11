@@ -65,6 +65,7 @@ class SelectContactRepository {
               'uid': userModel.uid,
               'isGroupChat': false,
               'groupId': '',
+              'profilePic': userModel.profilePic,
             },
           );
           return;

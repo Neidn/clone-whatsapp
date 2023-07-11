@@ -62,6 +62,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           uid: arguments['uid'],
           isGroupChat: arguments['isGroupChat'],
           groupId: arguments['groupId'],
+          profilePic: arguments['profilePic'],
         ),
       );
 

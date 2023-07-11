@@ -32,6 +32,7 @@ class ContactList extends ConsumerWidget {
                         'uid': chatGroup.communityId,
                         'isGroupChat': true,
                         'groupId': chatGroup.groupId,
+                        'profilePic': chatGroup.groupPic,
                       },
                     ),
                     leading: CircleAvatar(
@@ -74,6 +75,7 @@ class ContactList extends ConsumerWidget {
                         'uid': chatContact.contactId,
                         'isGroupChat': false,
                         'groupId': '',
+                        'profilePic': chatContact.profilePic,
                       },
                     ),
                     leading: CircleAvatar(

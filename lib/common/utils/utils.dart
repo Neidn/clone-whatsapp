@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -97,10 +97,10 @@ Future<GiphyGif?> pickGIF({
   required BuildContext context,
 }) async {
   try {
-    final GiphyGif? gif = await Giphy.getGif(
+    final GiphyGif? gif = await GiphyGet.getGif(
       context: context,
       apiKey: dotenv.get('GIPHY_API_KEY'),
-      showAttribution: false,
+      // showAttribution: false,
     );
 
     if (gif == null) {

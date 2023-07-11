@@ -9,10 +9,10 @@ import 'package:clone_whatsapp/features/chat/widgets/message_reply_preview.dart'
 import 'package:clone_whatsapp/features/chat/widgets/picker_bottom_sheet.dart';
 import 'package:clone_whatsapp/models/message_reply.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:giphy_get/giphy_get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
