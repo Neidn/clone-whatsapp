@@ -35,8 +35,20 @@ class _CallScreenState extends ConsumerState<CallScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _disposeAgora();
+    super.dispose();
+  }
+
   void _initAgora() async {
     await _agoraClient.initialize();
+  }
+
+  void _disposeAgora() async {
+    if (_agoraClient.isInitialized) {
+      await _agoraClient.release();
+    }
   }
 
   @override
