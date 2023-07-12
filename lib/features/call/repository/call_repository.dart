@@ -59,4 +59,21 @@ class CallRepository {
       );
     }
   }
+
+  void endCall({
+    required BuildContext context,
+    required String callerId,
+    required String receiverId,
+  }) async {
+    try {
+      await firestore.collection(callPath).doc(callerId).delete();
+
+      await firestore.collection(callPath).doc(receiverId).delete();
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        content: e.toString(),
+      );
+    }
+  }
 }

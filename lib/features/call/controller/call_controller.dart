@@ -66,4 +66,16 @@ class CallController {
       );
     });
   }
+
+  void endCall({
+    required BuildContext context,
+    required String callerId,
+    required String receiverId,
+  }) {
+    callRepository.endCall(
+      context: context,
+      callerId: callerId,
+      receiverId: receiverId,
+    );
+  }
 }
