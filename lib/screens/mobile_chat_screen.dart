@@ -12,7 +12,7 @@ class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
 
   final String name;
-  final String uid;
+  final String uid; // UserID or CommunityID
   final bool isGroupChat;
   final String groupId;
   final String profilePic;
@@ -36,6 +36,7 @@ class MobileChatScreen extends ConsumerWidget {
           receiverName: name,
           receiverPic: profilePic,
           isGroupChat: isGroupChat,
+          groupId: groupId,
         );
   }
 
@@ -50,8 +51,9 @@ class MobileChatScreen extends ConsumerWidget {
           title: isGroupChat
               ? Text(name)
               : StreamBuilder<UserModel>(
-                  stream:
-                      ref.read(authControllerProvider).userDataById(userId: uid),
+                  stream: ref
+                      .read(authControllerProvider)
+                      .userDataById(userId: uid),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(

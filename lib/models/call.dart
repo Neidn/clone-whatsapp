@@ -7,6 +7,8 @@ class Call {
   final String receiverName;
   final String receiverPic;
   final bool hasDialled;
+  final bool isGroupCall;
+  final String groupId;
 
   Call({
     required this.callId,
@@ -17,6 +19,8 @@ class Call {
     required this.receiverName,
     required this.receiverPic,
     required this.hasDialled,
+    this.isGroupCall = false,
+    this.groupId = '',
   });
 
   factory Call.fromMap(Map<String, dynamic> data) {
@@ -29,6 +33,8 @@ class Call {
       receiverName: data['receiverName'],
       receiverPic: data['receiverPic'],
       hasDialled: data['hasDialled'],
+      isGroupCall: data['isGroupCall'],
+      groupId: data['groupId'],
     );
   }
 
@@ -42,6 +48,8 @@ class Call {
       'receiverName': receiverName,
       'receiverPic': receiverPic,
       'hasDialled': hasDialled,
+      'isGroupCall': isGroupCall,
+      'groupId': groupId,
     };
   }
 }

@@ -55,7 +55,16 @@ class CallPickupScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // TODO: End Call and close other phone's call screen
+                            ref.read(callControllerProvider).endCall(
+                                  context: context,
+                                  callerId: call.callerId,
+                                  receiverId: call.receiverId,
+                                  isGroupChat: false,
+                                  groupId: '',
+                                );
+                          },
                           icon: const Icon(
                             Icons.call_end,
                             color: Colors.redAccent,
@@ -69,6 +78,7 @@ class CallPickupScreen extends ConsumerWidget {
                                 channelId: call.callerId,
                                 call: call,
                                 isGroupChat: false,
+                                groupId: '',
                               ),
                             ));
                           },

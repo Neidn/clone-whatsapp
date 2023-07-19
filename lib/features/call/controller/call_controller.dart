@@ -14,6 +14,10 @@ final callControllerProvider = Provider((ref) => CallController(
       firebaseAuth: FirebaseAuth.instance,
     ));
 
+final callStreamProvider = StreamProvider.autoDispose<DocumentSnapshot>((ref) {
+  return ref.watch(callControllerProvider).getCallStream;
+});
+
 class CallController {
   final CallRepository callRepository;
   final ProviderRef ref;
@@ -27,12 +31,16 @@ class CallController {
 
   Stream<DocumentSnapshot> get getCallStream => callRepository.getCallStream;
 
+  Stream<DocumentSnapshot> get getCallDialogStream =>
+      callRepository.getCallDialogStream;
+
   void makeCall({
     required BuildContext context,
     required String receiverId,
     required String receiverName,
     required String receiverPic,
     required bool isGroupChat,
+    required String groupId,
   }) async {
     ref.read(userDataAuthProvider).whenData((UserModel? userModel) {
       final String callId = const Uuid().v1();
@@ -46,6 +54,8 @@ class CallController {
         receiverName: receiverName,
         receiverPic: receiverPic,
         hasDialled: true,
+        isGroupCall: isGroupChat,
+        groupId: groupId,
       );
 
       final Call receiverCall = Call(
@@ -57,13 +67,24 @@ class CallController {
         receiverName: receiverName,
         receiverPic: receiverPic,
         hasDialled: false,
+        isGroupCall: isGroupChat,
+        groupId: groupId,
       );
 
-      callRepository.makeCall(
-        context: context,
-        senderCall: senderCall,
-        receiverCall: receiverCall,
-      );
+      if (!isGroupChat) {
+        callRepository.makeCall(
+          context: context,
+          senderCall: senderCall,
+          receiverCall: receiverCall,
+        );
+      } else {
+        callRepository.makeGroupCall(
+          context: context,
+          senderCall: senderCall,
+          receiverCall: receiverCall,
+          groupId: groupId,
+        );
+      }
     });
   }
 
@@ -71,11 +92,33 @@ class CallController {
     required BuildContext context,
     required String callerId,
     required String receiverId,
+    required bool isGroupChat,
+    required String groupId,
   }) {
-    callRepository.endCall(
+    if (!isGroupChat) {
+      callRepository.endCall(
+        context: context,
+        callerId: callerId,
+        receiverId: receiverId,
+      );
+    } else {
+      callRepository.endGroupCall(
+        context: context,
+        callerId: callerId,
+        receiverId: receiverId,
+        groupId: groupId,
+      );
+    }
+  }
+
+  void endCallFromPickup({
+    required BuildContext context,
+    required Call call,
+  }) {
+    callRepository.endCallFromPickup(
       context: context,
-      callerId: callerId,
-      receiverId: receiverId,
+      call: call,
+      receiverId: firebaseAuth.currentUser!.uid,
     );
   }
 }
